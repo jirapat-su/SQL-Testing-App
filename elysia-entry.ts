@@ -2,7 +2,6 @@ import type { Get, UniversalHandler } from '@universal-middleware/core'
 
 import { createHandler, createMiddleware } from '@universal-middleware/elysia'
 import Elysia from 'elysia'
-import { WebStandardAdapter } from 'elysia/adapter/web-standard'
 import { renderPage } from 'vike/server'
 
 import { api } from '@/src/api'
@@ -18,9 +17,7 @@ export const vikeHandler: Get<[], UniversalHandler> = () => async (request, cont
   }
   const pageContext = await renderPage(pageContextInit)
   const response = pageContext.httpResponse
-
-  const { readable, writable } = new TransformStream()
-  response.pipe(writable)
+  const readable = response.getReadableWebStream()
 
   return new Response(readable, {
     headers: response.headers,
@@ -28,13 +25,7 @@ export const vikeHandler: Get<[], UniversalHandler> = () => async (request, cont
   })
 }
 
-const app = new Elysia({
-  adapter: WebStandardAdapter,
-  name: 'ElysiaJS Server',
-  serve: {
-    maxRequestBodySize: 1024 * 1024 * 256,
-  },
-})
+const app = new Elysia({})
   .use(createMiddleware(authSessionMiddleware)())
   .use(api)
   .all('*', createHandler(vikeHandler)())

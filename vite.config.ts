@@ -31,7 +31,9 @@ export default defineConfig({
     }),
     react(),
     tailwindcss(),
-    vercel(),
+    vercel({
+      source: '/.*',
+    }),
   ],
   resolve: {
     alias: {
