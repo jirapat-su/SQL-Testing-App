@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+bun run env:ec
+
+# Add all .env files except .env.keys to the staging area
+for file in .env*; do
+    if [ -f "$file" ] && [ "$file" != ".env.keys" ]; then
+        git add "$file" 2>/dev/null || true
+    fi
+done

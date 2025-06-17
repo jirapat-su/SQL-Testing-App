@@ -1,0 +1,1 @@
+export { prismaApp } from './app';
