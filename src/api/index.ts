@@ -2,8 +2,8 @@ import { cors } from '@elysiajs/cors'
 import swagger from '@elysiajs/swagger'
 import Elysia from 'elysia'
 
+import { auth } from '@/src/libs/better-auth/auth'
 import { authOpenAPI } from '@/src/libs/better-auth/open-api'
-import { auth } from '@/src/libs/better-auth/server'
 
 import { defaultRouter } from './routers/default'
 

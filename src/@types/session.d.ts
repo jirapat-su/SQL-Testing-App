@@ -1,5 +1,5 @@
 /* eslint-disable ts/consistent-type-definitions */
-import type { auth } from '@/src/libs/better-auth/server'
+import type { auth } from '@/src/libs/better-auth/auth'
 
 type Session = Awaited<ReturnType<typeof auth.api.getSession>>
 

@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 
+import { Seed_User } from "./user"
+
 function formatTime(ms: number): string {
   if (ms < 1000) return `${ms.toFixed(2)}ms`
   const seconds = ms / 1000
@@ -7,7 +9,9 @@ function formatTime(ms: number): string {
 }
 
 async function runSeed() {
-  const seeds: (() => Promise<void>)[] = []
+  const seeds: (() => Promise<void>)[] = [
+    Seed_User
+  ]
 
   const startTotal = performance.now()
   console.log(``)

@@ -1,6 +1,6 @@
 import type { Get, UniversalMiddleware } from '@universal-middleware/core'
 
-import { auth } from './server'
+import { auth } from './auth'
 
 const authSessionMiddleware: Get<[], UniversalMiddleware> = () => async (request, context) => {
   try {

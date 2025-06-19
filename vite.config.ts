@@ -9,9 +9,7 @@ import './src/env/client'
 import './src/env/server'
 
 export default defineConfig({
-  build: {
-    target: 'es2022',
-  },
+  build: { target: 'es2022' },
   plugins: [
     vike(),
     devServer({
@@ -31,18 +29,17 @@ export default defineConfig({
     }),
     react(),
     tailwindcss(),
-    vercel({
-      source: '/.*',
-    }),
+    vercel({ source: '/.*' }),
   ],
   resolve: {
-    alias: {
-      '@': __dirname,
-    },
+    alias: { '@': __dirname },
   },
   vercel: {
     additionalEndpoints: [
       {
+        buildOptions: {
+          external: ['lz4-napi'],
+        },
         destination: 'ssr_',
         route: false,
         source: 'elysia-entry.ts',

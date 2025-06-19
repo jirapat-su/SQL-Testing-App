@@ -1,9 +1,19 @@
-import type { MantineThemeOverride } from '@mantine/core'
+import { createTheme } from '@mui/material/styles'
 
-import { createTheme } from '@mantine/core'
-
-const theme: MantineThemeOverride = createTheme({
-  fontFamily: 'Prompt, sans-serif',
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      lg: 1200,
+      md: 900,
+      sm: 600,
+      xl: 1536,
+      xs: 0,
+    },
+  },
+  colorSchemes: { dark: true, light: true },
+  cssVariables: {
+    colorSchemeSelector: 'class',
+  },
 })
 
-export default theme
+export { theme }

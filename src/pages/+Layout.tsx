@@ -1,16 +1,17 @@
-import { localStorageColorSchemeManager, MantineProvider } from '@mantine/core'
+import CssBaseline from '@mui/material/CssBaseline'
+import GlobalStyles from '@mui/material/GlobalStyles'
+import { ThemeProvider } from '@mui/material/styles'
 
-import theme from './theme'
 import './app.css'
-
-const colorSchemeManager = localStorageColorSchemeManager({
-  key: 'app-color-scheme',
-})
+import { theme } from './theme'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <MantineProvider colorSchemeManager={colorSchemeManager} defaultColorScheme='dark' theme={theme}>
+    <ThemeProvider defaultMode='dark' theme={theme}>
+      <GlobalStyles styles='@layer theme, base, mui, components, utilities;' />
+      <CssBaseline />
+
       {children}
-    </MantineProvider>
+    </ThemeProvider>
   )
 }

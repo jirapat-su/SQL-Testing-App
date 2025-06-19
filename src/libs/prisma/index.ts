@@ -1,1 +1,1 @@
-export { prismaApp } from './app';
+export { appDB } from './app'

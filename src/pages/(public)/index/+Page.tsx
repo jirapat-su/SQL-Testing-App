@@ -1,5 +1,10 @@
-import { LoadingOverlay } from '@mantine/core'
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export default function Page() {
-  return <LoadingOverlay visible={true} zIndex={1000} />
+  return (
+    <Box className='flex justify-center items-center h-dvh'>
+      <CircularProgress />
+    </Box>
+  )
 }

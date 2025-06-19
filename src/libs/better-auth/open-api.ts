@@ -1,4 +1,4 @@
-import { auth } from './server'
+import { auth } from './auth'
 
 const getSchema = async () => auth.api.generateOpenAPISchema()
 

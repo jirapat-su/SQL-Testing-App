@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+bun run lint
 bun run env:ec
 
 # Add all .env files except .env.keys to the staging area

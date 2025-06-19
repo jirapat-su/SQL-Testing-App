@@ -115,6 +115,6 @@ export default antfu(
     },
   },
   {
-    ignores: ['dist', '.husky', '.react-router', '.vercel'],
+    ignores: ['dist', '.husky', '.react-router', '.vercel', 'database'],
   }
 )
