@@ -3,7 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 export default function Page() {
   return (
-    <Box className='flex justify-center items-center h-dvh'>
+    <Box className="flex justify-center items-center h-dvh">
       <CircularProgress />
     </Box>
   )

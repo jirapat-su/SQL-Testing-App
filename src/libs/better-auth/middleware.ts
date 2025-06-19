@@ -12,7 +12,8 @@ const authSessionMiddleware: Get<[], UniversalMiddleware> = () => async (request
       ...context,
       session,
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('betterAuthSessionMiddleware:', error)
 
     return {

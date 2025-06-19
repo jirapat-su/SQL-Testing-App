@@ -17,14 +17,12 @@ type BigCalendarProps = {
   onSelectEvent?: (event: Event, e: React.SyntheticEvent<HTMLElement>) => void
 }
 
-const noopOnSelectEvent = (_ev: Event, _e: React.SyntheticEvent<HTMLElement>) => {}
-
 export default function BigCalendar({ events, height = '500px', onSelectEvent = noopOnSelectEvent }: BigCalendarProps) {
   return (
     <Box style={{ height }}>
       <Calendar
-        culture='th'
-        endAccessor='end'
+        culture="th"
+        endAccessor="end"
         events={events}
         localizer={localizer}
         messages={{
@@ -37,7 +35,7 @@ export default function BigCalendar({ events, height = '500px', onSelectEvent = 
           next: 'ถัดไป',
           noEventsInRange: 'ไม่มีเหตุการณ์ในช่วงนี้',
           previous: 'ก่อนหน้า',
-          showMore: (total) => `+ เพิ่มอีก ${total} รายการ`,
+          showMore: total => `+ เพิ่มอีก ${total} รายการ`,
           time: 'เวลา',
           today: 'วันนี้',
           tomorrow: 'พรุ่งนี้',
@@ -46,10 +44,12 @@ export default function BigCalendar({ events, height = '500px', onSelectEvent = 
           yesterday: 'เมื่อวานนี้',
         }}
         onSelectEvent={onSelectEvent}
-        startAccessor='start'
+        startAccessor="start"
         style={{ height: '100%' }}
         views={['month', 'week', 'day', 'agenda']}
       />
     </Box>
   )
 }
+
+function noopOnSelectEvent(_ev: Event, _e: React.SyntheticEvent<HTMLElement>) {}

@@ -1,5 +1,6 @@
-const getFirstConsonant = (name?: string) => {
-  if (!name) return ''
+function getFirstConsonant(name?: string) {
+  if (!name)
+    return ''
 
   const thaiConsonants = /[\u0E01-\u0E2E]/
   const englishLetters = /[a-z]/i

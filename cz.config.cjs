@@ -27,7 +27,7 @@ module.exports = {
     footer: 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n',
     scope: '\nDenote the SCOPE of this change (optional):',
     subject: 'Write a SHORT, IMPERATIVE tense description of the change:\n',
-    type: "Select the type of change that you're committing:",
+    type: 'Select the type of change that you\'re committing:',
   },
   scopes: [{ name: 'api' }, { name: 'admin' }, { name: 'user' }, { name: 'database' }, { name: 'general' }],
   // limit subject length

@@ -40,7 +40,8 @@ const auth = betterAuth({
       return value || null
     },
     set: async (key, value, ttl) => {
-      if (ttl) await keyv.set(key, value, ttl)
+      if (ttl)
+        await keyv.set(key, value, ttl)
       else await keyv.set(key, value)
     },
   },

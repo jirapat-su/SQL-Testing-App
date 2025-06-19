@@ -38,7 +38,7 @@ export default function ProtectLayout({ children }: { children: React.ReactNode 
 
   return (
     <AppProvider
-      key={'protect-layout'}
+      key="protect-layout"
       navigation={NAVIGATION}
       router={{
         navigate: (url: string | URL) => navigate(typeof url === 'string' ? url : url.toString()),
@@ -55,7 +55,7 @@ export default function ProtectLayout({ children }: { children: React.ReactNode 
           toolbarActions: ToolbarActions,
         }}
       >
-        <Box className='p-4'>{children}</Box>
+        <Box className="p-4">{children}</Box>
       </DashboardLayout>
     </AppProvider>
   )
@@ -63,19 +63,19 @@ export default function ProtectLayout({ children }: { children: React.ReactNode 
 
 function CustomAppTitle() {
   return (
-    <Stack alignItems='center' direction='row' spacing={2}>
-      <img alt='CPE_LOGO' height={32} src='/CPE_LOGO.webp' width={32} />
-      <Typography className='max-sm:hidden' variant='h6'>
+    <Stack alignItems="center" direction="row" spacing={2}>
+      <img alt="CPE_LOGO" height={32} src="/CPE_LOGO.webp" width={32} />
+      <Typography className="max-sm:hidden" variant="h6">
         SQL Testing
       </Typography>
-      <Chip color='info' label='BETA' size='small' />
+      <Chip color="info" label="BETA" size="small" />
     </Stack>
   )
 }
 
 function SidebarFooter({ mini }: SidebarFooterProps) {
   return (
-    <Typography sx={{ m: 1, overflow: 'hidden', whiteSpace: 'nowrap' }} variant='caption'>
+    <Typography sx={{ m: 1, overflow: 'hidden', whiteSpace: 'nowrap' }} variant="caption">
       {mini ? `${new Date().getFullYear()}` : `${new Date().getFullYear()} - CPE RMUTI`}
     </Typography>
   )
@@ -90,48 +90,49 @@ function ToolbarActions() {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose =
-    (menu: 'settings' | 'sign-out' | undefined = undefined) =>
-    async () => {
-      setAnchorEl(null)
-      if (!menu) return
+  const handleClose
+    = (menu: 'settings' | 'sign-out' | undefined = undefined) =>
+      async () => {
+        setAnchorEl(null)
+        if (!menu)
+          return
 
-      switch (menu) {
-        case 'settings': {
-          break
-        }
+        switch (menu) {
+          case 'settings': {
+            break
+          }
 
-        case 'sign-out': {
-          await authClient.signOut({
-            fetchOptions: {
-              onSuccess: () => {
-                navigate('/sign-in')
+          case 'sign-out': {
+            await authClient.signOut({
+              fetchOptions: {
+                onSuccess: () => {
+                  navigate('/sign-in')
+                },
               },
-            },
-          })
-          break
+            })
+            break
+          }
         }
       }
-    }
 
   return (
-    <Stack alignItems={'center'} direction='row'>
+    <Stack alignItems="center" direction="row">
       <Stack
         aria-controls={open ? 'account-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
-        aria-haspopup='true'
-        className='items-center gap-2 hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-800 p-2 rounded-md'
-        direction='row'
+        aria-haspopup="true"
+        className="items-center gap-2 hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-800 p-2 rounded-md"
+        direction="row"
         onClick={handleClick}
       >
         <Avatar sx={{ height: 32, width: 32 }}>{getFirstConsonant(session?.user.name)}</Avatar>
-        <Typography className='max-sm:hidden'>{session?.user.name}</Typography>
+        <Typography className="max-sm:hidden">{session?.user.name}</Typography>
       </Stack>
 
       <Menu
         anchorEl={anchorEl}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        id='account-menu'
+        id="account-menu"
         onClick={handleClose()}
         onClose={handleClose()}
         open={open}
@@ -157,9 +158,9 @@ function ToolbarActions() {
                 mr: 1,
                 width: 32,
               },
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              mt: 1.5,
-              overflow: 'visible',
+              'filter': 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              'mt': 1.5,
+              'overflow': 'visible',
             },
           },
         }}
@@ -171,13 +172,13 @@ function ToolbarActions() {
 
         <MenuItem onClick={handleClose('settings')}>
           <ListItemIcon>
-            <Settings fontSize='small' />
+            <Settings fontSize="small" />
           </ListItemIcon>
           Settings
         </MenuItem>
         <MenuItem onClick={handleClose('sign-out')}>
           <ListItemIcon>
-            <Logout fontSize='small' />
+            <Logout fontSize="small" />
           </ListItemIcon>
           Sign out
         </MenuItem>

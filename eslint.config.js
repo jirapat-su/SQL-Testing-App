@@ -1,47 +1,13 @@
 import antfu from '@antfu/eslint-config'
-import format from 'eslint-plugin-format'
 import perfectionist from 'eslint-plugin-perfectionist'
 
 export default antfu(
   {
-    formatters: {
-      css: true,
-      html: true,
-      markdown: 'prettier',
-    },
+    formatters: false,
+    ignores: ['dist', '.husky', '.react-router', '.vercel'],
     jsx: true,
+    plugins: [perfectionist.configs['recommended-alphabetical']],
     react: true,
-    typescript: true,
-    // Disable antfu's stylistic rules to avoid conflicts with Prettier
-    stylistic: false,
-  },
-  {
-    plugins: {
-      format,
-    },
-    rules: {
-      'format/prettier': [
-        'error',
-        {
-          arrowParens: 'always',
-          bracketSpacing: true,
-          endOfLine: 'lf',
-          jsxSingleQuote: true,
-          printWidth: 120,
-          semi: false,
-          singleQuote: true,
-          tabWidth: 2,
-          trailingComma: 'es5',
-          useTabs: false,
-        },
-      ],
-    },
-  },
-  {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    plugins: {
-      perfectionist,
-    },
     rules: {
       ...perfectionist.configs['recommended-alphabetical'].rules,
       // Disable antfu's import sorting to avoid conflicts with perfectionist
@@ -49,6 +15,7 @@ export default antfu(
       'sort-imports': 'off',
 
       // Custom perfectionist rules
+      'perfectionist/sort-classes': 'off',
       'perfectionist/sort-exports': [
         'error',
         {
@@ -75,6 +42,7 @@ export default antfu(
           type: 'alphabetical',
         },
       ],
+      'perfectionist/sort-modules': 'off',
       'perfectionist/sort-named-imports': [
         'error',
         {
@@ -97,7 +65,6 @@ export default antfu(
       'no-empty-pattern': 'off',
       'node/prefer-global/buffer': 'off',
       'node/prefer-global/process': 'off',
-      'perfectionist/sort-classes': 'off',
       'react-hooks/rules-of-hooks': 'off',
       'ts/consistent-type-definitions': ['error', 'type'],
       'ts/no-explicit-any': 'warn',
@@ -113,8 +80,12 @@ export default antfu(
         },
       ],
     },
+    stylistic: {
+      indent: 2,
+      jsx: true,
+      quotes: 'single',
+      semi: false,
+    },
+    typescript: true,
   },
-  {
-    ignores: ['dist', '.husky', '.react-router', '.vercel', 'database'],
-  }
 )

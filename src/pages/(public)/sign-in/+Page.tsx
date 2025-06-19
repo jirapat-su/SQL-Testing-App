@@ -13,14 +13,6 @@ const providers = [
   { id: 'credentials', name: 'Email and Password' },
 ]
 
-const CustomButton = (isLoading: boolean) => () => {
-  return (
-    <Button disabled={isLoading} fullWidth sx={{ my: 2 }} type='submit' variant='contained'>
-      Sign In
-    </Button>
-  )
-}
-
 export default function Page() {
   const [loading, setLoading] = useState(false)
   const { urlParsed } = usePageContext()
@@ -48,19 +40,21 @@ export default function Page() {
               },
               {
                 onRequest: () => setLoading(true),
-              }
+              },
             )
 
             if (error) {
               resolve({ error: error.message })
               setLoading(false)
             }
-          } catch {
+          }
+          catch {
             resolve({ error: 'An error occurred while signing in. Please try again.' })
             setLoading(false)
           }
         })()
-      } else {
+      }
+      else {
         // Social Sign In
         ;(async () => {
           try {
@@ -71,14 +65,15 @@ export default function Page() {
               },
               {
                 onRequest: () => setLoading(true),
-              }
+              },
             )
 
             if (error) {
               resolve({ error: error.message })
               setLoading(false)
             }
-          } catch {
+          }
+          catch {
             resolve({ error: 'An error occurred while signing in. Please try again.' })
             setLoading(false)
           }
@@ -119,4 +114,14 @@ export default function Page() {
       }}
     />
   )
+}
+
+function CustomButton(isLoading: boolean) {
+  return () => {
+    return (
+      <Button disabled={isLoading} fullWidth sx={{ my: 2 }} type="submit" variant="contained">
+        Sign In
+      </Button>
+    )
+  }
 }

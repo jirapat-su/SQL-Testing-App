@@ -8,6 +8,7 @@ const globalForPrisma = global as unknown as {
 
 const appDB = globalForPrisma.appDB || new PrismaClient().$extends(withAccelerate())
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.appDB = appDB
+if (process.env.NODE_ENV !== 'production')
+  globalForPrisma.appDB = appDB
 
 export { appDB }
