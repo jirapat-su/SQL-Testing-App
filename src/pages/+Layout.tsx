@@ -7,7 +7,12 @@ import { theme } from './theme'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider defaultMode='dark' theme={theme}>
+    <ThemeProvider
+      colorSchemeStorageKey='toolpad-color-scheme'
+      defaultMode='dark'
+      modeStorageKey='toolpad-mode'
+      theme={theme}
+    >
       <GlobalStyles styles='@layer theme, base, mui, components, utilities;' />
       <CssBaseline />
 

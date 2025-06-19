@@ -7,7 +7,6 @@ import Settings from '@mui/icons-material/Settings'
 import Avatar from '@mui/material/Avatar'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -20,6 +19,7 @@ import { usePageContext } from 'vike-react/usePageContext'
 import { navigate } from 'vike/client/router'
 
 import { authClient } from '@/src/libs/better-auth/client'
+import { getFirstConsonant } from '@/src/utils/getFirstConsonant'
 
 import { theme } from '../theme'
 
@@ -51,7 +51,7 @@ export default function ProtectLayout({ children }: { children: React.ReactNode 
         slots={{
           appTitle: CustomAppTitle,
           sidebarFooter: SidebarFooter,
-          toolbarActions: ToolbarActionsSearch,
+          toolbarActions: ToolbarActions,
         }}
       >
         {children}
@@ -64,7 +64,9 @@ function CustomAppTitle() {
   return (
     <Stack alignItems='center' direction='row' spacing={2}>
       <img alt='CPE_LOGO' height={32} src='/CPE_LOGO.webp' width={32} />
-      <Typography variant='h6'>SQL Testing</Typography>
+      <Typography className='max-sm:hidden' variant='h6'>
+        SQL Testing
+      </Typography>
       <Chip color='info' label='BETA' size='small' />
     </Stack>
   )
@@ -78,7 +80,7 @@ function SidebarFooter({ mini }: SidebarFooterProps) {
   )
 }
 
-function ToolbarActionsSearch() {
+function ToolbarActions() {
   const { data: session } = authClient.useSession()
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -112,21 +114,18 @@ function ToolbarActionsSearch() {
     }
 
   return (
-    <Stack className='gap-4' direction='row'>
-      <IconButton
+    <Stack alignItems={'center'} direction='row'>
+      <Stack
         aria-controls={open ? 'account-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup='true'
-        disableRipple
+        className='items-center gap-2 hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-800 p-2 rounded-md'
+        direction='row'
         onClick={handleClick}
-        size='small'
-        sx={{ ml: 2 }}
       >
-        <Stack className='items-center gap-2' direction='row'>
-          <Avatar sx={{ height: 32, width: 32 }}>{session?.user.name?.charAt(0).toUpperCase()}</Avatar>
-          <Typography>{session?.user.name}</Typography>
-        </Stack>
-      </IconButton>
+        <Avatar sx={{ height: 32, width: 32 }}>{getFirstConsonant(session?.user.name)}</Avatar>
+        <Typography className='max-sm:hidden'>{session?.user.name}</Typography>
+      </Stack>
 
       <Menu
         anchorEl={anchorEl}
