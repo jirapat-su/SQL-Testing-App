@@ -37,9 +37,6 @@ export default defineConfig({
   vercel: {
     additionalEndpoints: [
       {
-        buildOptions: {
-          external: ['lz4-napi'],
-        },
         destination: 'ssr_',
         route: false,
         source: 'elysia-entry.ts',

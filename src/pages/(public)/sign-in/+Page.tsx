@@ -1,5 +1,7 @@
+import type { AuthProvider, AuthResponse } from '@toolpad/core/SignInPage'
+
 import Button from '@mui/material/Button'
-import { type AuthProvider, type AuthResponse, SignInPage } from '@toolpad/core/SignInPage'
+import { SignInPage } from '@toolpad/core/SignInPage'
 import { useState } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
 

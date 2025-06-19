@@ -1,4 +1,3 @@
-import KeyvLz4 from '@keyv/compress-lz4'
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { bearer, openAPI } from 'better-auth/plugins'
@@ -8,7 +7,6 @@ import { env } from '@/src/env/server'
 import { appDB } from '@/src/libs/prisma'
 
 const keyv = new Keyv({
-  compression: new KeyvLz4(),
   namespace: 'better-auth',
   store: new Map(),
   useKeyPrefix: false,
