@@ -1,3 +1,36 @@
+import { addHours } from 'date-fns'
+
+import BigCalendar from '@/src/components/BigCalendar'
+
 export default function Page() {
-  return <div>Home Page</div>
+  return (
+    <>
+      <BigCalendar
+        events={[
+          {
+            allDay: false,
+            end: addHours(new Date(), 1),
+            start: addHours(new Date(), 2),
+            title: 'Sample Event 1',
+          },
+          {
+            allDay: false,
+            end: addHours(new Date(), 3),
+            start: addHours(new Date(), 4),
+            title: 'Sample Event 2',
+          },
+          {
+            allDay: false,
+            end: addHours(new Date(), 5),
+            start: addHours(new Date(), 6),
+            title: 'Sample Event 3',
+          },
+        ]}
+        onSelectEvent={(ev) => {
+          // eslint-disable-next-line no-alert
+          alert(`Selected event: ${ev.title}`)
+        }}
+      />
+    </>
+  )
 }

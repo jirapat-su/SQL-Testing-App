@@ -1,0 +1,280 @@
+/* React Big Calendar Dark Theme - Colors Only */
+
+/* Calendar Container */
+.dark .rbc-calendar {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+/* Headers */
+.dark .rbc-header {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #404040;
+}
+
+/* Toolbar */
+.dark .rbc-toolbar {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+}
+
+.dark .rbc-toolbar button {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+.dark .rbc-toolbar button:hover {
+  background-color: #4a4a4a;
+  border-color: #666;
+}
+
+.dark .rbc-toolbar button:active,
+.dark .rbc-toolbar button.rbc-active {
+  background-color: #0066cc;
+  border-color: #0066cc;
+  color: white;
+}
+
+.dark .rbc-toolbar-label {
+  color: #e0e0e0;
+}
+
+/* Month View */
+.dark .rbc-month-view {
+  background-color: #1a1a1a;
+  border-color: #404040;
+}
+
+.dark .rbc-month-row {
+  border-color: #404040;
+}
+
+.dark .rbc-date-cell {
+  background-color: #2a2a2a;
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark .rbc-date-cell.rbc-off-range {
+  background-color: #1a1a1a;
+  color: #666;
+}
+
+.dark .rbc-date-cell.rbc-off-range-bg {
+  background-color: #1a1a1a;
+}
+
+.dark .rbc-date-cell.rbc-today {
+  background-color: #2d4a2d;
+}
+
+.dark .rbc-date-cell > a,
+.dark .rbc-date-cell > span {
+  color: #e0e0e0;
+}
+
+.dark .rbc-date-cell.rbc-today > a,
+.dark .rbc-date-cell.rbc-today > span {
+  background-color: #4caf50;
+  color: white;
+}
+
+.dark .rbc-date-cell.rbc-off-range > a,
+.dark .rbc-date-cell.rbc-off-range > span {
+  color: #666;
+}
+
+/* Week and Day Views */
+.dark .rbc-time-view {
+  background-color: #1a1a1a;
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark .rbc-time-header {
+  background-color: #2d2d2d;
+  border-color: #404040;
+}
+
+.dark .rbc-time-header-content {
+  border-color: #404040;
+}
+
+.dark .rbc-time-header-cell {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #404040;
+}
+
+.dark .rbc-time-content {
+  background-color: #1a1a1a;
+}
+
+.dark .rbc-time-slot {
+  border-color: #333;
+  color: #e0e0e0;
+}
+
+.dark .rbc-time-slot.rbc-now {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.dark .rbc-timeslot-group {
+  border-color: #404040;
+}
+
+.dark .rbc-day-slot {
+  border-color: #404040;
+}
+
+.dark .rbc-time-gutter {
+  background-color: #2d2d2d;
+  border-color: #404040;
+}
+
+.dark .rbc-allday-cell {
+  background-color: #2a2a2a;
+  border-color: #404040;
+}
+
+.dark .rbc-row-bg {
+  background-color: #1a1a1a;
+}
+
+.dark .rbc-row-bg .rbc-day-bg {
+  border-color: #404040;
+}
+
+.dark .rbc-row-bg .rbc-today {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+/* Time Labels */
+.dark .rbc-label {
+  color: #b0b0b0;
+  background-color: #2d2d2d;
+  border-color: #404040;
+}
+
+/* Time Slots (ช่วงเวลาในแต่ละแถว) */
+.dark .rbc-time-slot {
+  background-color: #2a2a2a;
+}
+
+.dark .rbc-timeslot-group .rbc-time-slot {
+  background-color: #2a2a2a;
+}
+
+.dark .rbc-time-slot:not(.rbc-label) {
+  background-color: #2a2a2a;
+}
+
+/* Day columns background */
+.dark .rbc-day-bg {
+  background-color: #2a2a2a;
+}
+
+.dark .rbc-day-bg.rbc-today {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+/* Events */
+.dark .rbc-event {
+  background-color: #0066cc;
+  border-color: #004499;
+  color: white;
+}
+
+.dark .rbc-event:hover {
+  background-color: #0080ff;
+  border-color: #0066cc;
+}
+
+.dark .rbc-event.rbc-selected {
+  background-color: #ff6b35;
+  border-color: #e55a2b;
+}
+
+.dark .rbc-event-allday {
+  background-color: #6c5ce7;
+  border-color: #5f3dc4;
+}
+
+/* Show More Button */
+.dark .rbc-show-more {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+.dark .rbc-show-more:hover {
+  background-color: #4a4a4a;
+  border-color: #666;
+}
+
+/* Popup/Overlay */
+.dark .rbc-overlay {
+  background-color: #2d2d2d;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+.dark .rbc-overlay-header {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+/* Agenda View */
+.dark .rbc-agenda-view {
+  background-color: #1a1a1a;
+  border-color: #404040;
+}
+
+.dark .rbc-agenda-view table {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.dark .rbc-agenda-view .rbc-agenda-table tbody > tr > td {
+  border-color: #404040;
+}
+
+.dark .rbc-agenda-view .rbc-agenda-table .rbc-agenda-time-cell {
+  background-color: #2d2d2d;
+  border-color: #404040;
+}
+
+.dark .rbc-agenda-view .rbc-agenda-table .rbc-agenda-event-cell {
+  background-color: #2a2a2a;
+}
+
+.dark .rbc-agenda-view .rbc-agenda-table .rbc-agenda-date-cell {
+  background-color: #3a3a3a;
+  border-color: #404040;
+}
+
+/* Current Time Indicator */
+.dark .rbc-current-time-indicator {
+  background-color: #ff4757;
+}
+
+.dark .rbc-current-time-indicator::before {
+  background-color: #ff4757;
+}
+
+/* Selection */
+.dark .rbc-slot-selection {
+  background-color: rgba(102, 179, 255, 0.3);
+  border-color: #66b3ff;
+}
+
+/* Focus states */
+.dark .rbc-calendar:focus,
+.dark .rbc-date-cell:focus,
+.dark .rbc-event:focus,
+.dark .rbc-toolbar button:focus {
+  outline-color: #66b3ff;
+}

@@ -4,6 +4,7 @@ import type { SidebarFooterProps } from '@toolpad/core/DashboardLayout'
 import HomeIcon from '@mui/icons-material/Home'
 import Logout from '@mui/icons-material/Logout'
 import Settings from '@mui/icons-material/Settings'
+import { Box } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
@@ -54,7 +55,7 @@ export default function ProtectLayout({ children }: { children: React.ReactNode 
           toolbarActions: ToolbarActions,
         }}
       >
-        {children}
+        <Box className='p-4'>{children}</Box>
       </DashboardLayout>
     </AppProvider>
   )
