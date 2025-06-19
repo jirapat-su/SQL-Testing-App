@@ -9,6 +9,7 @@
         "@elysiajs/swagger": "^1.3.0",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
+        "@fontsource/sarabun": "^5.2.6",
         "@mui/icons-material": "^7.1.1",
         "@mui/material": "^7.1.1",
         "@prisma/extension-accelerate": "^2.0.1",
@@ -290,6 +291,8 @@
     "@eslint/object-schema": ["@eslint/object-schema@2.1.6", "", {}, "sha512-RBMg5FRL0I0gs51M/guSAj5/e14VQ4tpZnQNWwuDT66P14I43ItmPfIZRhO9fUVIPOAQXU47atlywZ/czoqFPA=="],
 
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.3.2", "", { "dependencies": { "@eslint/core": "^0.15.0", "levn": "^0.4.1" } }, "sha512-4SaFZCNfJqvk/kenHpI8xvN42DMaoycy4PzKc5otHxRswww1kAt82OlBuwRVLofCACCTZEcla2Ydxv8scMXaTg=="],
+
+    "@fontsource/sarabun": ["@fontsource/sarabun@5.2.6", "", {}, "sha512-3LXxvv3sa5wn++Qnio331jpsRBGDgEMy0fVfcev3P/pFwQFq34XJhv36BCQ53gP/JQ78P6zApBmh4AunMhkRvg=="],
 
     "@gitmoji/commit-types": ["@gitmoji/commit-types@1.1.5", "", {}, "sha512-8D3FZMRY+gtYpTcHG1SOGmm9CFqxNh6rI9xDoCydxHxnWgqInbdF3nk9gibW5gXA58Hf2cVcJaLEcGOKLRAtmw=="],
 

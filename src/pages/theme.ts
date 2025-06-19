@@ -14,6 +14,9 @@ const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class',
   },
+  typography: {
+    fontFamily: 'Sarabun,  sans-serif',
+  },
 })
 
 export { theme }

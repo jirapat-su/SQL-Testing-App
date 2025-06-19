@@ -2,6 +2,15 @@
 
 @import 'tailwindcss';
 
+@import '@fontsource/sarabun/100.css';
+@import '@fontsource/sarabun/200.css';
+@import '@fontsource/sarabun/300.css';
+@import '@fontsource/sarabun/400.css';
+@import '@fontsource/sarabun/500.css';
+@import '@fontsource/sarabun/600.css';
+@import '@fontsource/sarabun/700.css';
+@import '@fontsource/sarabun/800.css';
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
@@ -310,4 +319,9 @@
 @utility elevation-* {
   background-image: --value(--overlay- *);
   box-shadow: --value(--shadow- *);
+}
+
+html,
+body {
+  font-family: 'Sarabun', sans-serif;
 }
