@@ -5,6 +5,7 @@ import { SignInPage } from '@toolpad/core/SignInPage'
 import { useState } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
 
+import { CircularProgress } from '@/src/components/circular-progress'
 import { authClient } from '@/src/libs/better-auth/client'
 
 const providers = [
@@ -84,35 +85,39 @@ export default function Page() {
   }
 
   return (
-    <SignInPage
-      localeText={{
-        signInTitle: 'Sign in',
-      }}
-      providers={providers}
-      signIn={signIn}
-      slotProps={{
-        emailField: {
-          defaultValue: 'dev01@example.com',
-          disabled: loading,
-          required: true,
-        },
-        form: { noValidate: true },
-        passwordField: {
-          defaultValue: 'p@ssw0rd',
-          disabled: loading,
-          required: true,
-        },
-      }}
-      slots={{
-        submitButton: CustomButton(loading),
-      }}
-      sx={{
-        '& form > .MuiStack-root': {
-          marginTop: '2rem',
-          rowGap: '0.5rem',
-        },
-      }}
-    />
+    <>
+      {loading && <CircularProgress isFullScreen />}
+
+      <SignInPage
+        localeText={{
+          signInTitle: 'Sign in',
+        }}
+        providers={providers}
+        signIn={signIn}
+        slotProps={{
+          emailField: {
+            defaultValue: 'dev01@example.com',
+            disabled: loading,
+            required: true,
+          },
+          form: { noValidate: true },
+          passwordField: {
+            defaultValue: 'p@ssw0rd',
+            disabled: loading,
+            required: true,
+          },
+        }}
+        slots={{
+          submitButton: CustomButton(loading),
+        }}
+        sx={{
+          '& form > .MuiStack-root': {
+            marginTop: '2rem',
+            rowGap: '0.5rem',
+          },
+        }}
+      />
+    </>
   )
 }
 

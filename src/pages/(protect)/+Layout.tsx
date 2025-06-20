@@ -15,10 +15,11 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
 import { navigate } from 'vike/client/router'
 
+import { CircularProgress } from '@/src/components/circular-progress'
 import { authClient } from '@/src/libs/better-auth/client'
 import { getFirstConsonant } from '@/src/utils/getFirstConsonant'
 
@@ -82,6 +83,7 @@ function SidebarFooter({ mini }: SidebarFooterProps) {
 }
 
 function ToolbarActions() {
+  const [loading, setLoading] = useState(false)
   const { data: session } = authClient.useSession()
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -90,101 +92,108 @@ function ToolbarActions() {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose
-    = (menu: 'settings' | 'sign-out' | undefined = undefined) =>
-      async () => {
-        setAnchorEl(null)
-        if (!menu)
-          return
+  const handleClose = useCallback((menu: 'settings' | 'sign-out' | undefined = undefined) =>
+    async () => {
+      setAnchorEl(null)
+      if (!menu)
+        return
 
-        switch (menu) {
-          case 'settings': {
-            break
-          }
+      switch (menu) {
+        case 'settings': {
+          break
+        }
 
-          case 'sign-out': {
-            await authClient.signOut({
-              fetchOptions: {
-                onSuccess: () => {
-                  navigate('/sign-in')
-                },
+        case 'sign-out': {
+          setLoading(true)
+
+          await authClient.signOut({
+            fetchOptions: {
+              onSuccess: async () => {
+                await navigate('/sign-in')
+                setLoading(false)
               },
-            })
-            break
-          }
+            },
+          })
+
+          break
         }
       }
+    }, [])
 
   return (
-    <Stack alignItems="center" direction="row">
-      <Stack
-        aria-controls={open ? 'account-menu' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
-        className="items-center gap-2 hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-800 p-2 rounded-md"
-        direction="row"
-        onClick={handleClick}
-      >
-        <Avatar sx={{ height: 32, width: 32 }}>{getFirstConsonant(session?.user.name)}</Avatar>
-        <Typography className="max-sm:hidden">{session?.user.name}</Typography>
-      </Stack>
+    <>
+      {loading && <CircularProgress isFullScreen />}
 
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        id="account-menu"
-        onClick={handleClose()}
-        onClose={handleClose()}
-        open={open}
-        slotProps={{
-          paper: {
-            elevation: 0,
-            sx: {
-              '&::before': {
-                bgcolor: 'background.paper',
-                content: '""',
-                display: 'block',
-                height: 10,
-                position: 'absolute',
-                right: 14,
-                top: 0,
-                transform: 'translateY(-50%) rotate(45deg)',
-                width: 10,
-                zIndex: 0,
+      <Stack alignItems="center" direction="row">
+        <Stack
+          aria-controls={open ? 'account-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup="true"
+          className="items-center gap-2 hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-800 p-2 rounded-md"
+          direction="row"
+          onClick={handleClick}
+        >
+          <Avatar sx={{ height: 32, width: 32 }}>{getFirstConsonant(session?.user.name)}</Avatar>
+          <Typography className="max-sm:hidden">{session?.user.name}</Typography>
+        </Stack>
+
+        <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          id="account-menu"
+          onClick={handleClose()}
+          onClose={handleClose()}
+          open={open}
+          slotProps={{
+            paper: {
+              elevation: 0,
+              sx: {
+                '&::before': {
+                  bgcolor: 'background.paper',
+                  content: '""',
+                  display: 'block',
+                  height: 10,
+                  position: 'absolute',
+                  right: 14,
+                  top: 0,
+                  transform: 'translateY(-50%) rotate(45deg)',
+                  width: 10,
+                  zIndex: 0,
+                },
+                '& .MuiAvatar-root': {
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                  width: 32,
+                },
+                'filter': 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                'mt': 1.5,
+                'overflow': 'visible',
               },
-              '& .MuiAvatar-root': {
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-                width: 32,
-              },
-              'filter': 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              'mt': 1.5,
-              'overflow': 'visible',
             },
-          },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-      >
-        <MenuItem disabled>{session?.user.name}</MenuItem>
+          }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        >
+          <MenuItem disabled>{session?.user.name}</MenuItem>
 
-        <Divider />
+          <Divider />
 
-        <MenuItem onClick={handleClose('settings')}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleClose('sign-out')}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Sign out
-        </MenuItem>
-      </Menu>
+          <MenuItem onClick={handleClose('settings')}>
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+          <MenuItem onClick={handleClose('sign-out')}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Sign out
+          </MenuItem>
+        </Menu>
 
-      <ThemeSwitcher />
-    </Stack>
+        <ThemeSwitcher />
+      </Stack>
+    </>
   )
 }

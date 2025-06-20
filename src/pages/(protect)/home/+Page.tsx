@@ -1,6 +1,6 @@
 import { addHours } from 'date-fns'
 
-import BigCalendar from '@/src/components/BigCalendar'
+import { BigCalendar } from '@/src/components/big-calendar'
 
 export default function Page() {
   return (

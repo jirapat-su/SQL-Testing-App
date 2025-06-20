@@ -17,7 +17,7 @@ type BigCalendarProps = {
   onSelectEvent?: (event: Event, e: React.SyntheticEvent<HTMLElement>) => void
 }
 
-export default function BigCalendar({ events, height = '500px', onSelectEvent = noopOnSelectEvent }: BigCalendarProps) {
+function BigCalendar({ events, height = '500px', onSelectEvent = noopOnSelectEvent }: BigCalendarProps) {
   return (
     <Box style={{ height }}>
       <Calendar
@@ -53,3 +53,5 @@ export default function BigCalendar({ events, height = '500px', onSelectEvent = 
 }
 
 function noopOnSelectEvent(_ev: Event, _e: React.SyntheticEvent<HTMLElement>) {}
+
+export { BigCalendar }
