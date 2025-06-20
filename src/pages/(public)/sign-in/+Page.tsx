@@ -3,24 +3,20 @@ import type { AuthProvider, AuthResponse } from '@toolpad/core/SignInPage'
 import Button from '@mui/material/Button'
 import { SignInPage } from '@toolpad/core/SignInPage'
 import { useState } from 'react'
+import { useData } from 'vike-react/useData'
 import { usePageContext } from 'vike-react/usePageContext'
 
 import { CircularProgress } from '@/src/components/circular-progress'
 import { authClient } from '@/src/libs/better-auth/client'
 
-const providers = [
-  { id: 'google', name: 'Google' },
-  { id: 'github', name: 'GitHub' },
-  { id: 'credentials', name: 'Email and Password' },
-]
+import type { Data } from './+data'
 
 export default function Page() {
-  const [loading, setLoading] = useState(false)
+  const { authProviders } = useData<Data>()
   const { urlParsed } = usePageContext()
-  const {
-    search: { redirect },
-  } = urlParsed
+  const { search: { redirect } } = urlParsed
 
+  const [loading, setLoading] = useState(false)
   const redirectTo = redirect || '/home'
 
   const signIn = (provider: AuthProvider, formData?: FormData): Promise<AuthResponse> => {
@@ -92,7 +88,7 @@ export default function Page() {
         localeText={{
           signInTitle: 'Sign in',
         }}
-        providers={providers}
+        providers={authProviders}
         signIn={signIn}
         slotProps={{
           emailField: {

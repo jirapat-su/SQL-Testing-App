@@ -13,23 +13,27 @@ const keyv = new Keyv({
 })
 
 const auth = betterAuth({
+  account: {
+    updateAccountOnSignIn: false,
+  },
   advanced: {
     cookiePrefix: 'auth',
     crossSubDomainCookies: {
       enabled: false,
     },
     defaultCookieAttributes: {
-      httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: env.VERCEL_ENV === 'production',
     },
   },
   basePath: '/api/auth',
   database: prismaAdapter(appDB, { provider: 'postgresql' }),
+  disabledPaths: ['/reset-password'],
   emailAndPassword: {
     autoSignIn: false,
     disableSignUp: env.VERCEL === '1',
-    enabled: true,
+    enabled: !(env.VERCEL === '1'),
+    requireEmailVerification: false,
   },
   plugins: [bearer(), openAPI()],
   rateLimit: {
@@ -85,6 +89,12 @@ const auth = betterAuth({
           enum: ['USER', 'ADMIN'],
         },
       },
+    },
+    changeEmail: {
+      enabled: false,
+    },
+    deleteUser: {
+      enabled: false,
     },
   },
 })
