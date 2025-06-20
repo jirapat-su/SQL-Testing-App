@@ -5,8 +5,7 @@ import vike from 'vike/plugin'
 import { defineConfig } from 'vite'
 import vercel from 'vite-plugin-vercel'
 
-import './src/env/client'
-import './src/env/server'
+import './src/env'
 
 export default defineConfig({
   build: { target: 'es2022' },

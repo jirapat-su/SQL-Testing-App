@@ -3,7 +3,7 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { bearer, openAPI } from 'better-auth/plugins'
 import Keyv from 'keyv'
 
-import { env } from '@/src/env/server'
+import { env } from '@/src/env'
 import { appDB } from '@/src/libs/prisma'
 
 const keyv = new Keyv({

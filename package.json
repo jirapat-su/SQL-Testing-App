@@ -40,7 +40,7 @@
     "db:reset": "dotenvx run -f .env -- prisma migrate reset --force",
     "db:seed": "dotenvx run -f .env -- prisma db seed",
     "db:studio": "dotenvx run -f .env -- prisma studio",
-    "__________betterauth_scripts_________": "",
+    "__________better-auth_scripts_________": "",
     "auth:secret": "bunx @better-auth/cli@latest secret",
     "auth:generate": "dotenvx run -f .env -- bunx @better-auth/cli generate --config ./src/libs/better-auth/auth.ts",
     "_____________deps_scripts_____________": "",
