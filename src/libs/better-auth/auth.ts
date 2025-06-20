@@ -7,21 +7,28 @@ import { env } from '@/src/env'
 import { appDB } from '@/src/libs/prisma'
 
 const keyv = new Keyv({
-  namespace: 'better-auth',
+  namespace: 'auth',
   store: new Map(),
   useKeyPrefix: false,
 })
 
 const auth = betterAuth({
   advanced: {
+    cookiePrefix: 'auth',
     crossSubDomainCookies: {
       enabled: false,
+    },
+    defaultCookieAttributes: {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: env.VERCEL_ENV === 'production',
     },
   },
   basePath: '/api/auth',
   database: prismaAdapter(appDB, { provider: 'postgresql' }),
   emailAndPassword: {
     autoSignIn: false,
+    disableSignUp: env.VERCEL === '1',
     enabled: true,
   },
   plugins: [bearer(), openAPI()],
