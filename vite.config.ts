@@ -8,12 +8,13 @@ import vercel from 'vite-plugin-vercel'
 import './src/env'
 
 export default defineConfig({
-  build: { target: 'es2022' },
+  build: {
+    target: 'es2022',
+  },
   plugins: [
     vike(),
     devServer({
       entry: 'elysia-entry.ts',
-
       exclude: [
         /^\/@.+$/,
         /.*\.(ts|tsx|vue)($|\?)/,
@@ -23,7 +24,6 @@ export default defineConfig({
         /^\/(public|assets|static)\/.+/,
         /^\/node_modules\/.*/,
       ],
-
       injectClientScript: false,
     }),
     react(),

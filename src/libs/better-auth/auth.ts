@@ -4,7 +4,7 @@ import { bearer, openAPI } from 'better-auth/plugins'
 import Keyv from 'keyv'
 
 import { env } from '@/src/env'
-import { appDB } from '@/src/libs/prisma'
+import { prisma } from '@/src/libs/prisma'
 
 const keyv = new Keyv({
   namespace: 'auth',
@@ -27,7 +27,7 @@ const auth = betterAuth({
     },
   },
   basePath: '/api/auth',
-  database: prismaAdapter(appDB, { provider: 'postgresql' }),
+  database: prismaAdapter(prisma, { provider: 'postgresql' }),
   disabledPaths: ['/reset-password'],
   emailAndPassword: {
     autoSignIn: false,

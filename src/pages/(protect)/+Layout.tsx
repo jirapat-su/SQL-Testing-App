@@ -4,7 +4,7 @@ import type { SidebarFooterProps } from '@toolpad/core/DashboardLayout'
 import HomeIcon from '@mui/icons-material/Home'
 import Logout from '@mui/icons-material/Logout'
 import Settings from '@mui/icons-material/Settings'
-import { Box } from '@mui/material'
+import StorageIcon from '@mui/icons-material/Storage'
 import Avatar from '@mui/material/Avatar'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
@@ -31,6 +31,7 @@ const NAVIGATION: Navigation = [
     title: 'Menus',
   },
   { icon: <HomeIcon />, segment: 'home', title: 'Home' },
+  { icon: <StorageIcon />, segment: 'database', title: 'Database' },
 ]
 
 export default function ProtectLayout({ children }: { children: React.ReactNode }) {
@@ -56,7 +57,7 @@ export default function ProtectLayout({ children }: { children: React.ReactNode 
           toolbarActions: ToolbarActions,
         }}
       >
-        <Box className="p-4">{children}</Box>
+        {children}
       </DashboardLayout>
     </AppProvider>
   )
@@ -69,7 +70,7 @@ function CustomAppTitle() {
       <Typography className="max-sm:hidden" variant="h6">
         SQL Testing
       </Typography>
-      <Chip color="info" label="BETA" size="small" />
+      <Chip color="primary" label="BETA" size="small" />
     </Stack>
   )
 }

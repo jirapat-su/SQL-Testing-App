@@ -6,24 +6,24 @@ const defaultRouter = new Elysia({
     tags: ['Default'],
   },
   name: 'Default Router',
-  prefix: '',
-})
-  .get('/health', () => {
-    return {
-      message: 'Server is running',
-      status: 'OK',
-      timestamp: process.uptime(),
-    }
-  })
-  .get('/', ({ request, server }) => {
-    const ip = ipAddress(request) || server?.requestIP(request)?.address || 'UNKNOWN'
-    const geodata = geolocation(request)
+}).group('', app =>
+  app
+    .get('/health', () => {
+      return {
+        message: 'Server is running',
+        status: 'OK',
+        timestamp: process.uptime(),
+      }
+    })
+    .get('/', ({ request, server }) => {
+      const ip = ipAddress(request) || server?.requestIP(request)?.address || 'UNKNOWN'
+      const geodata = geolocation(request)
 
-    return {
-      ipAddress: `Your IP is ${ip}`,
-      location: geodata,
-      message: `Hello from ElysiaJS`,
-    }
-  })
+      return {
+        ipAddress: `Your IP is ${ip}`,
+        location: geodata,
+        message: `Hello from ElysiaJS`,
+      }
+    }))
 
 export { defaultRouter }
