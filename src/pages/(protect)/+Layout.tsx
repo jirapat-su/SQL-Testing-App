@@ -21,7 +21,7 @@ import { navigate } from 'vike/client/router'
 
 import { CircularProgress } from '@/src/components/circular-progress'
 import { authClient } from '@/src/libs/better-auth/client'
-import { getFirstConsonant } from '@/src/utils/getFirstConsonant'
+import { getFirstConsonant } from '@/src/utils/get-first-consonant'
 
 import { theme } from '../theme'
 
