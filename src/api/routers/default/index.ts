@@ -16,7 +16,8 @@ const defaultRouter = new Elysia({
       }
     })
     .get('/', ({ request, server }) => {
-      const ip = ipAddress(request) || server?.requestIP(request)?.address || 'UNKNOWN'
+      const ip =
+        ipAddress(request) || server?.requestIP(request)?.address || 'UNKNOWN'
       const geodata = geolocation(request)
 
       return {
@@ -24,6 +25,7 @@ const defaultRouter = new Elysia({
         location: geodata,
         message: `Hello from ElysiaJS`,
       }
-    }))
+    })
+)
 
 export { defaultRouter }

@@ -14,13 +14,18 @@ import type { Data } from './+data'
 export default function Page() {
   const { authProviders } = useData<Data>()
   const { urlParsed } = usePageContext()
-  const { search: { redirect } } = urlParsed
+  const {
+    search: { redirect },
+  } = urlParsed
 
   const [loading, setLoading] = useState(false)
   const redirectTo = redirect || '/home'
 
-  const signIn = (provider: AuthProvider, formData?: FormData): Promise<AuthResponse> => {
-    const promise = new Promise<AuthResponse>((resolve) => {
+  const signIn = (
+    provider: AuthProvider,
+    formData?: FormData
+  ): Promise<AuthResponse> => {
+    const promise = new Promise<AuthResponse>(resolve => {
       if (provider.id === 'credentials') {
         // Email and Password Sign In
         ;(async () => {
@@ -37,21 +42,21 @@ export default function Page() {
               },
               {
                 onRequest: () => setLoading(true),
-              },
+              }
             )
 
             if (error) {
               resolve({ error: error.message })
               setLoading(false)
             }
-          }
-          catch {
-            resolve({ error: 'An error occurred while signing in. Please try again.' })
+          } catch {
+            resolve({
+              error: 'An error occurred while signing in. Please try again.',
+            })
             setLoading(false)
           }
         })()
-      }
-      else {
+      } else {
         // Social Sign In
         ;(async () => {
           try {
@@ -62,16 +67,17 @@ export default function Page() {
               },
               {
                 onRequest: () => setLoading(true),
-              },
+              }
             )
 
             if (error) {
               resolve({ error: error.message })
               setLoading(false)
             }
-          }
-          catch {
-            resolve({ error: 'An error occurred while signing in. Please try again.' })
+          } catch {
+            resolve({
+              error: 'An error occurred while signing in. Please try again.',
+            })
             setLoading(false)
           }
         })()
@@ -120,7 +126,13 @@ export default function Page() {
 function CustomButton(isLoading: boolean) {
   return () => {
     return (
-      <Button disabled={isLoading} fullWidth sx={{ my: 2 }} type="submit" variant="contained">
+      <Button
+        disabled={isLoading}
+        fullWidth
+        sx={{ my: 2 }}
+        type="submit"
+        variant="contained"
+      >
         Sign In
       </Button>
     )

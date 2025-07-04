@@ -1,5 +1,7 @@
 import antfu from '@antfu/eslint-config'
+import prettierConfig from 'eslint-config-prettier'
 import perfectionist from 'eslint-plugin-perfectionist'
+import prettier from 'eslint-plugin-prettier'
 
 export default antfu(
   {
@@ -63,6 +65,7 @@ export default antfu(
       'antfu/no-top-level-await': 'off',
       'no-console': ['error', { allow: ['warn', 'error', 'debug'] }],
       'no-empty-pattern': 'off',
+      'no-template-curly-in-string': 'off',
       'node/prefer-global/buffer': 'off',
       'node/prefer-global/process': 'off',
       'react-hooks/rules-of-hooks': 'off',
@@ -80,12 +83,16 @@ export default antfu(
         },
       ],
     },
-    stylistic: {
-      indent: 2,
-      jsx: true,
-      quotes: 'single',
-      semi: false,
-    },
+    stylistic: false,
     typescript: true,
   },
+  prettierConfig,
+  {
+    plugins: {
+      prettier,
+    },
+    rules: {
+      'prettier/prettier': 'error',
+    },
+  }
 )

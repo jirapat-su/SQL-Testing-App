@@ -10,14 +10,14 @@ const envServerSchema = {
   API_URL: z.string().url().readonly(),
 
   // DB
-  EXAM_MYSQL_HOST: z.union([
-    z.string().url(),
-    z.string().ip(),
-    z.literal('localhost'),
-  ])
+  EXAM_MYSQL_HOST: z
+    .union([z.string().url(), z.string().ip(), z.literal('localhost')])
     .readonly(),
   EXAM_MYSQL_PASSWORD: z.string().readonly(),
-  EXAM_MYSQL_PORT: z.string().transform(val => Number.parseInt(val)).readonly(),
+  EXAM_MYSQL_PORT: z
+    .string()
+    .transform(val => Number.parseInt(val))
+    .readonly(),
   EXAM_MYSQL_USER: z.string().readonly(),
   PRISMA_POSTGRES_URL: z.string().url().readonly(),
 

@@ -5,7 +5,11 @@ import { ThemeProvider } from '@mui/material/styles'
 import './app.css'
 import { theme } from './theme'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <ThemeProvider
       colorSchemeStorageKey="toolpad-color-scheme"

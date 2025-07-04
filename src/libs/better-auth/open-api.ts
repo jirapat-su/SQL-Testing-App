@@ -3,7 +3,9 @@ import { auth } from './auth'
 const getSchema = async () => auth.api.generateOpenAPISchema()
 
 const authOpenAPI = {
-  components: getSchema().then(({ components }) => components) as Promise<Record<string, unknown>>,
+  components: getSchema().then(({ components }) => components) as Promise<
+    Record<string, unknown>
+  >,
   getPaths: (prefix = '/api/auth') =>
     getSchema().then(({ paths }) => {
       const reference: typeof paths = Object.create(null)
@@ -15,7 +17,9 @@ const authOpenAPI = {
           reference[key] = pathValue
 
           for (const method of Object.keys(pathValue)) {
-            const operation = (reference[key] as Record<string, unknown>)[method]
+            const operation = (reference[key] as Record<string, unknown>)[
+              method
+            ]
             ;(operation as { tags?: string[] }).tags = ['Authentication']
           }
         }

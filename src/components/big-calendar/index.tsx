@@ -9,7 +9,13 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './dark-theme.css'
 
 const locales = { th }
-const localizer = dateFnsLocalizer({ format, getDay, locales, parse, startOfWeek })
+const localizer = dateFnsLocalizer({
+  format,
+  getDay,
+  locales,
+  parse,
+  startOfWeek,
+})
 
 type BigCalendarProps = {
   events: Event[]
@@ -17,7 +23,11 @@ type BigCalendarProps = {
   onSelectEvent?: (event: Event, e: React.SyntheticEvent<HTMLElement>) => void
 }
 
-function BigCalendar({ events, height = '500px', onSelectEvent = noopOnSelectEvent }: BigCalendarProps) {
+function BigCalendar({
+  events,
+  height = '500px',
+  onSelectEvent = noopOnSelectEvent,
+}: BigCalendarProps) {
   return (
     <Box style={{ height }}>
       <Calendar

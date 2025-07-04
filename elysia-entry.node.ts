@@ -10,7 +10,7 @@ const staticFile = new Elysia().use(
   staticPlugin({
     assets: path.join(process.cwd(), 'dist', 'client'),
     prefix: '/',
-  }),
+  })
 )
 
 const nodeApp = new Elysia().use(staticFile).use(app!).listen(3000)

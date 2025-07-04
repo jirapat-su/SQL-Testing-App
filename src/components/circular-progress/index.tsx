@@ -21,7 +21,11 @@ function CircularProgress({ isFullScreen = false }: CircularProgressProps) {
   const content = (
     <>
       <GradientDefs />
-      <MUICircularProgress size={60} sx={{ 'svg circle': { stroke: 'url(#custom_gradient)' } }} />
+
+      <MUICircularProgress
+        size={60}
+        sx={{ 'svg circle': { stroke: 'url(#custom_gradient)' } }}
+      />
     </>
   )
 
@@ -33,11 +37,7 @@ function CircularProgress({ isFullScreen = false }: CircularProgressProps) {
     )
   }
 
-  return (
-    <Box className="flex items-center justify-center">
-      {content}
-    </Box>
-  )
+  return <Box className="flex items-center justify-center">{content}</Box>
 }
 
 export { CircularProgress }

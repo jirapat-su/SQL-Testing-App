@@ -26,7 +26,7 @@ export default function Page() {
             title: 'Sample Event 3',
           },
         ]}
-        onSelectEvent={(ev) => {
+        onSelectEvent={ev => {
           // eslint-disable-next-line no-alert
           alert(`Selected event: ${ev.title}`)
         }}

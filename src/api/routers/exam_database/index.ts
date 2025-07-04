@@ -17,25 +17,32 @@ const examDatabaseRouter = new Elysia({
   app
     .use(getSession)
     .onBeforeHandle(({ session, status }) => {
-      if (!session)
-        return status(401, { message: 'Unauthorized' })
+      if (!session) return status(401, { message: 'Unauthorized' })
     })
     .get('/', async () => {
       const data = await service.getDatabases()
 
       return data
     })
-    .get('/:database_name/:table_name', async ({ params: { database_name, table_name } }) => {
-      const data = await service.getTableData(database_name, table_name)
+    .get(
+      '/:database_name/:table_name',
+      async ({ params: { database_name, table_name } }) => {
+        const data = await service.getTableData(database_name, table_name)
 
-      return data
-    }, {
-      params: TypeBox(
-        z.object({
-          database_name: z.string().default('Hospital').describe('Database name'),
-          table_name: z.string().default('Nurse').describe('Table name'),
-        }),
-      ),
-    }))
+        return data
+      },
+      {
+        params: TypeBox(
+          z.object({
+            database_name: z
+              .string()
+              .default('Hospital')
+              .describe('Database name'),
+            table_name: z.string().default('Nurse').describe('Table name'),
+          })
+        ),
+      }
+    )
+)
 
 export { examDatabaseRouter }

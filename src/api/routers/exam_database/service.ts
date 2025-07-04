@@ -1,6 +1,6 @@
 import { mysql } from '@/src/libs/mysql'
 
-const exam_database_names = ['Hospital', 'sys']
+const exam_database_names = ['Hospital']
 
 class ExamDatabaseService {
   async getDatabases() {
@@ -12,7 +12,9 @@ class ExamDatabaseService {
       connection.release()
 
       const tableNames = Array.isArray(rows)
-        ? rows.map(val => Object.values(val)[0]).filter(t => t !== '_prisma_migrations')
+        ? rows
+            .map(val => Object.values(val)[0])
+            .filter(t => t !== '_prisma_migrations')
         : []
 
       data.set(database_name, tableNames)
@@ -32,12 +34,13 @@ class ExamDatabaseService {
     try {
       const [rows] = await connection.execute(`SELECT * FROM \`${table_name}\``)
       return rows
-    }
-    catch (error) {
-      console.error(`Error fetching data from ${database_name}.${table_name}:`, error)
+    } catch (error) {
+      console.error(
+        `Error fetching data from ${database_name}.${table_name}:`,
+        error
+      )
       throw error
-    }
-    finally {
+    } finally {
       connection.release()
     }
   }

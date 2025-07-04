@@ -43,16 +43,15 @@ const auth = betterAuth({
     window: 60, // time window in seconds
   },
   secondaryStorage: {
-    delete: async (key) => {
+    delete: async key => {
       await keyv.delete(key)
     },
-    get: async (key) => {
+    get: async key => {
       const value = await keyv.get(key)
       return value || null
     },
     set: async (key, value, ttl) => {
-      if (ttl)
-        await keyv.set(key, value, ttl)
+      if (ttl) await keyv.set(key, value, ttl)
       else await keyv.set(key, value)
     },
   },

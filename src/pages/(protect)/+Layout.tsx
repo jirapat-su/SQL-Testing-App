@@ -34,7 +34,11 @@ const NAVIGATION: Navigation = [
   { icon: <StorageIcon />, segment: 'database', title: 'Database' },
 ]
 
-export default function ProtectLayout({ children }: { children: React.ReactNode }) {
+export default function ProtectLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const { urlParsed, urlPathname } = usePageContext()
   const appWindow = typeof window !== 'undefined' ? window : undefined
 
@@ -43,7 +47,8 @@ export default function ProtectLayout({ children }: { children: React.ReactNode 
       key="protect-layout"
       navigation={NAVIGATION}
       router={{
-        navigate: (url: string | URL) => navigate(typeof url === 'string' ? url : url.toString()),
+        navigate: (url: string | URL) =>
+          navigate(typeof url === 'string' ? url : url.toString()),
         pathname: urlPathname,
         searchParams: new URLSearchParams(urlParsed?.searchOriginal ?? ''),
       }}
@@ -77,8 +82,13 @@ function CustomAppTitle() {
 
 function SidebarFooter({ mini }: SidebarFooterProps) {
   return (
-    <Typography sx={{ m: 1, overflow: 'hidden', whiteSpace: 'nowrap' }} variant="caption">
-      {mini ? `${new Date().getFullYear()}` : `${new Date().getFullYear()} - CPE RMUTI`}
+    <Typography
+      sx={{ m: 1, overflow: 'hidden', whiteSpace: 'nowrap' }}
+      variant="caption"
+    >
+      {mini
+        ? `${new Date().getFullYear()}`
+        : `${new Date().getFullYear()} - CPE RMUTI`}
     </Typography>
   )
 }
@@ -93,33 +103,35 @@ function ToolbarActions() {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = useCallback((menu: 'settings' | 'sign-out' | undefined = undefined) =>
-    async () => {
-      setAnchorEl(null)
-      if (!menu)
-        return
+  const handleClose = useCallback(
+    (menu: 'settings' | 'sign-out' | undefined = undefined) =>
+      async () => {
+        setAnchorEl(null)
+        if (!menu) return
 
-      switch (menu) {
-        case 'settings': {
-          break
-        }
+        switch (menu) {
+          case 'settings': {
+            break
+          }
 
-        case 'sign-out': {
-          setLoading(true)
+          case 'sign-out': {
+            setLoading(true)
 
-          await authClient.signOut({
-            fetchOptions: {
-              onSuccess: async () => {
-                await navigate('/sign-in')
-                setLoading(false)
+            await authClient.signOut({
+              fetchOptions: {
+                onSuccess: async () => {
+                  await navigate('/sign-in')
+                  setLoading(false)
+                },
               },
-            },
-          })
+            })
 
-          break
+            break
+          }
         }
-      }
-    }, [])
+      },
+    []
+  )
 
   return (
     <>
@@ -134,8 +146,12 @@ function ToolbarActions() {
           direction="row"
           onClick={handleClick}
         >
-          <Avatar sx={{ height: 32, width: 32 }}>{getFirstConsonant(session?.user.name)}</Avatar>
-          <Typography className="max-sm:hidden">{session?.user.name}</Typography>
+          <Avatar sx={{ height: 32, width: 32 }}>
+            {getFirstConsonant(session?.user.name)}
+          </Avatar>
+          <Typography className="max-sm:hidden">
+            {session?.user.name}
+          </Typography>
         </Stack>
 
         <Menu
@@ -167,9 +183,9 @@ function ToolbarActions() {
                   mr: 1,
                   width: 32,
                 },
-                'filter': 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                'mt': 1.5,
-                'overflow': 'visible',
+                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                mt: 1.5,
+                overflow: 'visible',
               },
             },
           }}

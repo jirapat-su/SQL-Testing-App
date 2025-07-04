@@ -27,7 +27,7 @@ const api = new Elysia({
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
       origin: true,
       preflight: true,
-    }),
+    })
   )
   .mount(auth.handler)
   .use(defaultRouter)
@@ -51,7 +51,7 @@ const api = new Elysia({
         },
         spec: { url: '/api/docs/json' },
       },
-    }),
+    })
   )
 
 export type API = typeof api
