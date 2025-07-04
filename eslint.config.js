@@ -6,7 +6,7 @@ import prettier from 'eslint-plugin-prettier'
 export default antfu(
   {
     formatters: false,
-    ignores: ['dist', '.husky', '.react-router', '.vercel'],
+    ignores: ['dist', '.husky', '.react-router', '.vercel', '.claude'],
     jsx: true,
     plugins: [perfectionist.configs['recommended-alphabetical']],
     react: true,
