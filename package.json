@@ -65,6 +65,7 @@
     "@prisma/extension-accelerate": "^2.0.1",
     "@sinclair/typemap": "^0.10.1",
     "@t3-oss/env-core": "^0.13.8",
+    "@tanstack/react-query": "^5.81.5",
     "@toolpad/core": "^0.16.0",
     "@universal-middleware/core": "^0.4.8",
     "@universal-middleware/elysia": "^0.5.2",

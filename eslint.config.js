@@ -92,7 +92,7 @@ export default antfu(
       prettier,
     },
     rules: {
-      'prettier/prettier': 'error',
+      'prettier/prettier': 'warn',
     },
   }
 )

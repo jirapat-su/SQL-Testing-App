@@ -5,8 +5,7 @@ import Elysia from 'elysia'
 import { auth } from '@/src/libs/better-auth/auth'
 import { authOpenAPI } from '@/src/libs/better-auth/open-api'
 
-import { defaultRouter } from './routers/default'
-import { examDatabaseRouter } from './routers/exam_database'
+import { appRouter } from './routers'
 
 const api = new Elysia({
   name: 'ElysiaJS API',
@@ -30,8 +29,7 @@ const api = new Elysia({
     })
   )
   .mount(auth.handler)
-  .use(defaultRouter)
-  .use(examDatabaseRouter)
+  .use(appRouter)
   .use(
     swagger({
       documentation: {
