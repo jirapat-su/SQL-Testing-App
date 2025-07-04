@@ -33,6 +33,9 @@ export default defineConfig({
   resolve: {
     alias: { '@': __dirname },
   },
+  ssr: {
+    noExternal: ['@mui/x-data-grid'],
+  },
   vercel: {
     additionalEndpoints: [
       {

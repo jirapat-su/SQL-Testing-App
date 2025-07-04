@@ -1,7 +1,10 @@
+import type { GridColDef } from '@mui/x-data-grid'
+
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Collapse, List, ListItemButton, ListItemText } from '@mui/material'
-import { Fragment, useCallback, useState } from 'react'
+import { DataGrid } from '@mui/x-data-grid'
+import { Fragment, useCallback, useMemo, useState } from 'react'
 
 import SqlEditor from '@/src/components/sql-editor'
 
@@ -23,6 +26,37 @@ export default function Page() {
       return newOpen
     })
   }, [])
+
+  const { columns, rows } = useMemo(() => {
+    if (
+      !getTableData.data ||
+      !Array.isArray(getTableData.data) ||
+      getTableData.data.length === 0
+    ) {
+      return { columns: [], rows: [] }
+    }
+
+    const firstRow = getTableData.data[0]
+    const columnDefs: GridColDef[] = Object.keys(firstRow).map(key => ({
+      field: key,
+      flex: 1,
+      headerName: key,
+      valueFormatter: value => {
+        if (value === null || value === undefined) {
+          return 'null'
+        }
+        return String(value)
+      },
+      width: 150,
+    }))
+
+    const rowData = getTableData.data.map((row, index) => ({
+      id: index,
+      ...row,
+    }))
+
+    return { columns: columnDefs, rows: rowData }
+  }, [getTableData.data])
 
   return (
     <div className="flex flex-col lg:flex-row lg:overflow-hidden overflow-auto w-full h-full">
@@ -97,64 +131,44 @@ export default function Page() {
       <div className="flex-1">
         <div className="flex flex-col h-full">
           <div className="flex-1 overflow-auto">
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-2">Selected Table</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                {JSON.stringify(dbSelected, null, 2)}
-              </p>
+            <div className="p-4 flex flex-col h-full">
+              <p>{`Database: ${dbSelected?.database_name ?? ''}`}</p>
+              <p>{`Table: ${dbSelected?.table_name ?? ''}`}</p>
 
-              {getTableData.isPending && <div>Loading table data...</div>}
+              <div className="min-h-0 mt-4">
+                <DataGrid
+                  columns={columns}
+                  disableRowSelectionOnClick
+                  getRowId={row => row.id}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 10,
+                      },
+                    },
+                  }}
+                  loading={getTableData.isPending}
+                  pageSizeOptions={[5, 10, 25, 50]}
+                  rows={rows}
+                  sx={{
+                    '& .MuiDataGrid-row:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    },
+                    height: '100%',
+                  }}
+                />
+              </div>
 
               {getTableData.error && (
-                <div className="text-red-500">Error loading table data</div>
+                <div className="text-red-500 mt-4">
+                  Error loading table data
+                </div>
               )}
-
-              {getTableData.data &&
-                Array.isArray(getTableData.data) &&
-                getTableData.data.length > 0 && (
-                  <table className="min-w-full border-collapse border border-gray-300">
-                    <thead>
-                      <tr className="bg-gray-50">
-                        {Object.keys(getTableData.data[0] || {}).map(column => (
-                          <th
-                            className="border border-gray-300 px-4 py-2 text-left font-medium text-gray-700"
-                            key={column}
-                          >
-                            {column}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {getTableData.data.map(row => (
-                        <tr
-                          className="hover:bg-gray-50"
-                          key={`row-${JSON.stringify(row)}`}
-                        >
-                          {Object.entries(row).map(([column, value]) => (
-                            <td
-                              className="border border-gray-300 px-4 py-2 text-sm"
-                              key={`${column}`}
-                            >
-                              {value === null ? (
-                                <span className="text-gray-400 italic">
-                                  null
-                                </span>
-                              ) : (
-                                String(value)
-                              )}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
 
               {getTableData.data &&
                 (!Array.isArray(getTableData.data) ||
                   getTableData.data.length === 0) && (
-                  <div>
+                  <div className="mt-4">
                     <h4 className="font-medium mb-2">Table Data:</h4>
                     <div className="p-4 bg-gray-50 rounded">
                       <pre className="text-sm overflow-auto">
