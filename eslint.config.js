@@ -63,6 +63,7 @@ export default antfu(
 
       // Other custom rules
       'antfu/no-top-level-await': 'off',
+      'no-alert': 'off',
       'no-console': ['error', { allow: ['warn', 'error', 'debug'] }],
       'no-empty-pattern': 'off',
       'no-template-curly-in-string': 'off',

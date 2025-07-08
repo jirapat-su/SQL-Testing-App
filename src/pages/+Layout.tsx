@@ -7,7 +7,16 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { theme } from './theme'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    mutations: {
+      throwOnError: true,
+    },
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 export default function RootLayout({
   children,

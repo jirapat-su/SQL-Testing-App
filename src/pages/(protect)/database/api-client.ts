@@ -24,7 +24,7 @@ function useExamDatabaseAPI() {
       tableName: string
     }) => {
       const { data } = await baseHttpClient({ database_name: databaseName })({
-        table_name: tableName,
+        table_name: tableName || '',
       }).get()
 
       return data

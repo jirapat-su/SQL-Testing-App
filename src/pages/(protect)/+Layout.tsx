@@ -56,6 +56,7 @@ export default function ProtectLayout({
       window={appWindow}
     >
       <DashboardLayout
+        defaultSidebarCollapsed
         slots={{
           appTitle: CustomAppTitle,
           sidebarFooter: SidebarFooter,
@@ -191,7 +192,9 @@ function ToolbarActions() {
           }}
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
-          <MenuItem disabled>{session?.user.name}</MenuItem>
+          <MenuItem disabled sx={{ minWidth: 200 }}>
+            {session?.user.name}
+          </MenuItem>
 
           <Divider />
 
@@ -201,6 +204,7 @@ function ToolbarActions() {
             </ListItemIcon>
             Settings
           </MenuItem>
+
           <MenuItem onClick={handleClose('sign-out')}>
             <ListItemIcon>
               <Logout fontSize="small" />

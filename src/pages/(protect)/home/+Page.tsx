@@ -4,7 +4,7 @@ import { BigCalendar } from '@/src/components/big-calendar'
 
 export default function Page() {
   return (
-    <>
+    <div className="p-4">
       <BigCalendar
         events={[
           {
@@ -27,10 +27,9 @@ export default function Page() {
           },
         ]}
         onSelectEvent={ev => {
-          // eslint-disable-next-line no-alert
           alert(`Selected event: ${ev.title}`)
         }}
       />
-    </>
+    </div>
   )
 }

@@ -34,11 +34,8 @@ const examDatabaseRouter = new Elysia({
       {
         params: TypeBox(
           z.object({
-            database_name: z
-              .string()
-              .default('Hospital')
-              .describe('Database name'),
-            table_name: z.string().default('Nurse').describe('Table name'),
+            database_name: z.string(),
+            table_name: z.string(),
           })
         ),
       }

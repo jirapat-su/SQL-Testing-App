@@ -2,7 +2,13 @@ import type { GridColDef } from '@mui/x-data-grid'
 
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { Collapse, List, ListItemButton, ListItemText } from '@mui/material'
+import {
+  Button,
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemText,
+} from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 
@@ -11,13 +17,15 @@ import SqlEditor from '@/src/components/sql-editor'
 import { useExamDatabaseAPI } from './api-client'
 
 export default function Page() {
+  const [sqlCommand, setSqlCommand] = useState<string | undefined>('')
   const [open, setOpen] = useState<Array<boolean>>([true])
   const [dbSelected, setDbSelected] = useState<{
     database_name: string
-    table_name: string
+    table_name?: string
   } | null>(null)
 
   const { getDatabases, getTableData } = useExamDatabaseAPI()
+  const { data: queryData, mutateAsync: queryMutateAsync } = getTableData
 
   const handleOpenMenu = useCallback((index: number) => {
     setOpen(prevOpen => {
@@ -27,16 +35,29 @@ export default function Page() {
     })
   }, [])
 
+  const handleFetchTableData = useCallback(
+    async (databaseName: string, tableName: string) => {
+      setDbSelected({
+        database_name: databaseName,
+        table_name: tableName,
+      })
+
+      await queryMutateAsync({
+        databaseName,
+        tableName,
+      }).catch(err => {
+        console.error('Error fetching table data:', err)
+      })
+    },
+    [queryMutateAsync]
+  )
+
   const { columns, rows } = useMemo(() => {
-    if (
-      !getTableData.data ||
-      !Array.isArray(getTableData.data) ||
-      getTableData.data.length === 0
-    ) {
+    if (!queryData || !Array.isArray(queryData) || queryData.length === 0) {
       return { columns: [], rows: [] }
     }
 
-    const firstRow = getTableData.data[0]
+    const firstRow = queryData[0]
     const columnDefs: GridColDef[] = Object.keys(firstRow).map(key => ({
       field: key,
       flex: 1,
@@ -50,20 +71,20 @@ export default function Page() {
       width: 150,
     }))
 
-    const rowData = getTableData.data.map((row, index) => ({
+    const rowData = queryData?.map((row, index) => ({
       id: index,
       ...row,
     }))
 
     return { columns: columnDefs, rows: rowData }
-  }, [getTableData.data])
+  }, [queryData])
 
   return (
-    <div className="flex flex-col lg:flex-row lg:overflow-hidden overflow-auto w-full h-full">
-      <div className="lg:max-w-[280px] w-full border-b lg:border-r-1 border-divider">
+    <div className="flex flex-col lg:flex-row overflow-hidden w-full h-full">
+      <div className="lg:max-w-[280px] lg:min-w-[280px] w-full border-b lg:border-r-1 border-divider">
         <div className="p-4">Database List Items</div>
 
-        <div className="max-h-[400px] lg:max-h-full overflow-auto">
+        <div className="max-h-[200px] lg:max-h-full overflow-auto">
           {getDatabases.isLoading && (
             <div className="p-4">Loading databases...</div>
           )}
@@ -85,7 +106,7 @@ export default function Page() {
                     {open?.[idx] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                   </ListItemButton>
 
-                  {Object.entries(database[dbName!]).map(([key, value]) => {
+                  {Object.entries(database[dbName!]).map(([key, tbName]) => {
                     const { database_name, table_name } = dbSelected || {}
 
                     return (
@@ -97,25 +118,19 @@ export default function Page() {
                       >
                         <List
                           className={
-                            database_name === dbName && table_name === value
+                            database_name === dbName && table_name === tbName
                               ? 'text-primary-dark bg-primary/10'
                               : ''
                           }
                           component="div"
                           disablePadding
                           onClick={() => {
-                            setDbSelected({
-                              database_name: dbName!,
-                              table_name: value,
-                            })
-                            getTableData.mutate({
-                              databaseName: dbName!,
-                              tableName: value,
-                            })
+                            setSqlCommand(`SELECT * FROM \`${tbName}\``)
+                            handleFetchTableData(dbName!, tbName)
                           }}
                         >
                           <ListItemButton sx={{ pl: 4 }}>
-                            <ListItemText primary={value} />
+                            <ListItemText primary={tbName} />
                           </ListItemButton>
                         </List>
                       </Collapse>
@@ -128,66 +143,59 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-x-hidden">
         <div className="flex flex-col h-full">
-          <div className="flex-1 overflow-auto">
-            <div className="p-4 flex flex-col h-full">
-              <p>{`Database: ${dbSelected?.database_name ?? ''}`}</p>
-              <p>{`Table: ${dbSelected?.table_name ?? ''}`}</p>
+          <div className="flex flex-col p-4 overflow-hidden min-h-[400px]">
+            <p>Result</p>
 
-              <div className="min-h-0 mt-4">
-                <DataGrid
-                  columns={columns}
-                  disableRowSelectionOnClick
-                  getRowId={row => row.id}
-                  initialState={{
-                    pagination: {
-                      paginationModel: {
-                        pageSize: 10,
-                      },
+            <div className="mt-4 flex-1 overflow-hidden">
+              <DataGrid
+                columns={columns}
+                disableRowSelectionOnClick
+                getRowId={row => row.id}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 25,
                     },
-                  }}
-                  loading={getTableData.isPending}
-                  pageSizeOptions={[5, 10, 25, 50]}
-                  rows={rows}
-                  sx={{
-                    '& .MuiDataGrid-row:hover': {
-                      backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                    },
-                    height: '100%',
-                  }}
-                />
-              </div>
-
-              {getTableData.error && (
-                <div className="text-red-500 mt-4">
-                  Error loading table data
-                </div>
-              )}
-
-              {getTableData.data &&
-                (!Array.isArray(getTableData.data) ||
-                  getTableData.data.length === 0) && (
-                  <div className="mt-4">
-                    <h4 className="font-medium mb-2">Table Data:</h4>
-                    <div className="p-4 bg-gray-50 rounded">
-                      <pre className="text-sm overflow-auto">
-                        {JSON.stringify(getTableData.data, null, 2)}
-                      </pre>
-                    </div>
-                  </div>
-                )}
+                  },
+                }}
+                loading={getTableData.isPending}
+                pageSizeOptions={[5, 10, 25, 50]}
+                rows={rows}
+                sx={{
+                  '& .MuiDataGrid-row:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  },
+                }}
+              />
             </div>
           </div>
 
           <div className="w-full h-[400px] mt-auto border-t border-divider">
-            <div className="p-4">Code Editor</div>
-            <SqlEditor
-              onChange={val => {
-                // eslint-disable-next-line no-console
-                console.log('SQL Editor Value Changed:', val)
-              }}
-            />
+            <div className="flex items-center justify-between h-[60px] px-4">
+              <div>Code Editor</div>
+
+              <div>
+                <Button
+                  disabled={!dbSelected?.database_name}
+                  onClick={() => {
+                    alert('Run command is not implemented yet.')
+                  }}
+                  size="small"
+                  variant="outlined"
+                >
+                  Run Command
+                </Button>
+              </div>
+            </div>
+
+            <div className="h-[calc(100%-60px)] overflow-hidden">
+              <SqlEditor
+                onChange={val => setSqlCommand(val)}
+                value={sqlCommand}
+              />
+            </div>
           </div>
         </div>
       </div>

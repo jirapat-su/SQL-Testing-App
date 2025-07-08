@@ -33,6 +33,12 @@ export default defineConfig({
   resolve: {
     alias: { '@': __dirname },
   },
+  server: {
+    watch: {
+      interval: 100,
+      usePolling: true,
+    },
+  },
   ssr: {
     noExternal: ['@mui/x-data-grid'],
   },
