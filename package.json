@@ -63,14 +63,14 @@
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
     "@mui/x-data-grid": "^8.7.0",
-    "@prisma/extension-accelerate": "^2.0.1",
+    "@prisma/extension-accelerate": "^2.0.2",
     "@sinclair/typemap": "^0.10.1",
     "@t3-oss/env-core": "^0.13.8",
     "@tanstack/react-query": "^5.81.5",
     "@toolpad/core": "^0.16.0",
     "@universal-middleware/core": "^0.4.8",
     "@universal-middleware/elysia": "^0.5.2",
-    "@vercel/functions": "^2.2.2",
+    "@vercel/functions": "^2.2.3",
     "@vite-plugin-vercel/vike": "^9.0.6",
     "@vitejs/plugin-react": "^4.6.0",
     "better-auth": "^1.2.12",
@@ -85,16 +85,16 @@
     "vike-react": "^0.6.4",
     "vike-react-zustand": "^0.1.1",
     "vite-plugin-vercel": "^9.0.7",
-    "zod": "^3.25.73",
+    "zod": "^3.25.76",
     "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.2",
-    "@dotenvx/dotenvx": "^1.45.2",
+    "@dotenvx/dotenvx": "^1.46.0",
     "@eslint-react/eslint-plugin": "^1.52.2",
-    "@hono/vite-dev-server": "^0.19.1",
+    "@hono/vite-dev-server": "^0.20.0",
     "@tailwindcss/vite": "^4.1.11",
-    "@types/node": "^20.19.4",
+    "@types/node": "^20.19.5",
     "@types/react": "^19.1.8",
     "@types/react-big-calendar": "^1.16.2",
     "@types/react-dom": "^19.1.6",
@@ -115,6 +115,6 @@
     "prisma": "^6.11.1",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^7.0.3"
   }
 }
