@@ -1,14 +1,8 @@
 import z from 'zod'
 
-const envClientSchema = {
-  // API URL FrontEnd ENV
-  PUBLIC_ENV__API_URL: z.string().url().readonly(),
-}
+const envClientSchema = {}
 
 const envServerSchema = {
-  // API URL
-  API_URL: z.string().url().readonly(),
-
   // DB
   EXAM_MYSQL_HOST: z
     .union([z.string().url(), z.string().ip(), z.literal('localhost')])
