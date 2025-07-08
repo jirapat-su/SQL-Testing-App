@@ -4,13 +4,21 @@ import Elysia from 'elysia'
 
 import { auth } from '@/src/libs/better-auth/auth'
 import { authOpenAPI } from '@/src/libs/better-auth/open-api'
+import { Logger } from '@/src/libs/logger'
 
+import { requestID } from './plugins/request-id'
 import { appRouter } from './routers'
+
+const logger = new Logger('API')
 
 const api = new Elysia({
   name: 'ElysiaJS API',
   prefix: '/api',
 })
+  .onAfterResponse({ as: 'global' }, ({ path }) => {
+    logger.info(`[Request]`, path)
+  })
+  .use(requestID)
   .use(
     cors({
       allowedHeaders: [
