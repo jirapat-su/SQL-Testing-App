@@ -25,7 +25,8 @@ class Logger {
     return 'unknown'
   }
 
-  private formatMessage(level: string, showLocation: boolean = false): string {
+  private formatMessage(level: string): string {
+    const showLocation: boolean = typeof window !== 'undefined'
     const timestamp = ` [${this.getTimestamp()}]`
     const tag = this.tag ? ` [${this.tag}]` : ''
     const location = showLocation ? ` [${this.getLocation()}]` : ''
@@ -35,31 +36,23 @@ class Logger {
 
   debug(message: string, ...args: unknown[]) {
     console.debug(
-      this.formatMessage('\x1B[36m[DEBUG]\x1B[0m', true),
+      this.formatMessage('\x1B[36m[DEBUG]\x1B[0m'),
       message,
       ...args
     )
   }
 
   info(message: string, ...args: unknown[]) {
-    console.info(
-      this.formatMessage('\x1B[32m[INFO]\x1B[0m', false),
-      message,
-      ...args
-    )
+    console.info(this.formatMessage('\x1B[32m[INFO]\x1B[0m'), message, ...args)
   }
 
   warn(message: string, ...args: unknown[]) {
-    console.warn(
-      this.formatMessage('\x1B[33m[WARN]\x1B[0m', false),
-      message,
-      ...args
-    )
+    console.warn(this.formatMessage('\x1B[33m[WARN]\x1B[0m'), message, ...args)
   }
 
   error(message: string, ...args: unknown[]) {
     console.error(
-      this.formatMessage('\x1B[31m[ERROR]\x1B[0m', true),
+      this.formatMessage('\x1B[31m[ERROR]\x1B[0m'),
       message,
       ...args
     )

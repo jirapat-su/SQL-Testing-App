@@ -6,8 +6,10 @@ import { auth } from '@/src/libs/better-auth/auth'
 import { authOpenAPI } from '@/src/libs/better-auth/open-api'
 import { Logger } from '@/src/libs/logger'
 
-import { requestID } from './plugins/request-id'
-import { appRouter } from './routers'
+import type { ErrorService } from '../utils/error-service'
+
+import { apiRoutes } from './features/routes'
+import { REQUEST_ID_HEADER, requestID } from './plugins/request-id'
 
 const logger = new Logger('API')
 
@@ -18,6 +20,33 @@ const api = new Elysia({
   .onAfterResponse({ as: 'global' }, ({ path }) => {
     logger.info(`[Request]`, path)
   })
+  .onError(
+    { as: 'global' },
+    ({ body, error, params, path, query, response, set }) => {
+      logger.error(`[Request ID]`, set.headers[REQUEST_ID_HEADER])
+      logger.error(`[Path]`, path)
+      logger.error(`[Params]`, params)
+      logger.error(`[Query]`, query)
+      logger.error(`[Body]`, body)
+      logger.error(`[Response]`, response)
+      logger.error(`[Error]`, JSON.stringify(error, null, 2))
+
+      const err = error as ErrorService
+
+      return Response.json(
+        {
+          ...(err?.status === 422 && { detail: err }),
+          message: err?.message,
+          'request-id': set.headers[REQUEST_ID_HEADER],
+          status: err?.status,
+          success: false,
+        },
+        {
+          status: err?.status ?? 500,
+        }
+      )
+    }
+  )
   .use(requestID)
   .use(
     cors({
@@ -37,7 +66,7 @@ const api = new Elysia({
     })
   )
   .mount(auth.handler)
-  .use(appRouter)
+  .use(apiRoutes)
   .use(
     swagger({
       documentation: {

@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { httpClient } from '@/src/libs/eden'
 
 function useExamDatabaseAPI() {
-  const baseHttpClient = httpClient.api.exam_database
+  const baseHttpClient = httpClient.api['test-database']
   const getDatabasesQueryKey = useMemo(() => ['getDatabases'], [])
 
   const getDatabases = useQuery({
@@ -23,8 +23,8 @@ function useExamDatabaseAPI() {
       databaseName: string
       tableName: string
     }) => {
-      const { data } = await baseHttpClient({ database_name: databaseName })({
-        table_name: tableName || '',
+      const { data } = await baseHttpClient({ databaseName })({
+        tableName,
       }).get()
 
       return data

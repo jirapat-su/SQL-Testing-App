@@ -53,11 +53,13 @@ export default function Page() {
   )
 
   const { columns, rows } = useMemo(() => {
-    if (!queryData || !Array.isArray(queryData) || queryData.length === 0) {
+    const { result } = queryData || {}
+
+    if (!result || !Array.isArray(result) || result.length === 0) {
       return { columns: [], rows: [] }
     }
 
-    const firstRow = queryData[0]
+    const firstRow = result[0]
     const columnDefs: GridColDef[] = Object.keys(firstRow).map(key => ({
       field: key,
       flex: 1,
@@ -71,7 +73,7 @@ export default function Page() {
       width: 150,
     }))
 
-    const rowData = queryData?.map((row, index) => ({
+    const rowData = result?.map((row, index) => ({
       id: index,
       ...row,
     }))
@@ -96,7 +98,7 @@ export default function Page() {
             component="nav"
             sx={{ width: '100%' }}
           >
-            {getDatabases.data?.map((database, idx) => {
+            {getDatabases.data?.result?.map((database, idx) => {
               const dbName = Object.keys(database).shift()
 
               return (
