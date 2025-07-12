@@ -18,28 +18,32 @@ import { useExamDatabaseAPI } from './api-client'
 
 export default function Page() {
   const [sqlCommand, setSqlCommand] = useState<string | undefined>('')
-  const [open, setOpen] = useState<Array<boolean>>([true])
   const [dbSelected, setDbSelected] = useState<{
-    database_name: string
-    table_name?: string
-  } | null>(null)
+    databaseName?: string
+    tableName?: string
+  }>({
+    databaseName: undefined,
+    tableName: undefined,
+  })
 
   const { getDatabases, getTableData } = useExamDatabaseAPI()
-  const { data: queryData, mutateAsync: queryMutateAsync } = getTableData
-
-  const handleOpenMenu = useCallback((index: number) => {
-    setOpen(prevOpen => {
-      const newOpen = [...prevOpen]
-      newOpen[index] = !newOpen[index]
-      return newOpen
-    })
-  }, [])
+  const {
+    data: dbData,
+    isError: isErrorDatabases,
+    isLoading: isLoadingDatabases,
+  } = getDatabases
+  const {
+    data: tbData,
+    isError: isErrorTableData,
+    isPending: isLoadingTableData,
+    mutateAsync: queryMutateAsync,
+  } = getTableData
 
   const handleFetchTableData = useCallback(
     async (databaseName: string, tableName: string) => {
       setDbSelected({
-        database_name: databaseName,
-        table_name: tableName,
+        databaseName,
+        tableName,
       })
 
       await queryMutateAsync({
@@ -53,7 +57,7 @@ export default function Page() {
   )
 
   const { columns, rows } = useMemo(() => {
-    const { result } = queryData || {}
+    const { result } = tbData || {}
 
     if (!result || !Array.isArray(result) || result.length === 0) {
       return { columns: [], rows: [] }
@@ -79,7 +83,7 @@ export default function Page() {
     }))
 
     return { columns: columnDefs, rows: rowData }
-  }, [queryData])
+  }, [tbData])
 
   return (
     <div className="flex flex-col lg:flex-row overflow-hidden w-full h-full">
@@ -87,40 +91,54 @@ export default function Page() {
         <div className="p-4">Database List Items</div>
 
         <div className="max-h-[200px] lg:max-h-full overflow-auto">
-          {getDatabases.isLoading && (
+          {isLoadingDatabases && (
             <div className="p-4">Loading databases...</div>
           )}
-          {getDatabases.error && (
+
+          {isErrorDatabases && (
             <div className="p-4 text-red-500">Error loading databases</div>
           )}
+
           <List
             aria-labelledby="nested-list-subheader"
             component="nav"
             sx={{ width: '100%' }}
           >
-            {getDatabases.data?.result?.map((database, idx) => {
+            {dbData?.result?.map(database => {
               const dbName = Object.keys(database).shift()
 
               return (
                 <Fragment key={dbName}>
-                  <ListItemButton onClick={() => handleOpenMenu(idx)}>
+                  <ListItemButton
+                    onClick={() =>
+                      setDbSelected(prev => ({
+                        databaseName:
+                          prev?.databaseName === dbName ? undefined : dbName,
+                        tableName: undefined,
+                      }))
+                    }
+                  >
                     <ListItemText primary={dbName} />
-                    {open?.[idx] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                    {dbSelected?.databaseName === dbName ? (
+                      <ExpandLessIcon />
+                    ) : (
+                      <ExpandMoreIcon />
+                    )}
                   </ListItemButton>
 
                   {Object.entries(database[dbName!]).map(([key, tbName]) => {
-                    const { database_name, table_name } = dbSelected || {}
+                    const { databaseName, tableName } = dbSelected || {}
 
                     return (
                       <Collapse
-                        in={open?.[idx]}
+                        in={dbSelected?.databaseName === dbName}
                         key={key}
                         timeout="auto"
                         unmountOnExit
                       >
                         <List
                           className={
-                            database_name === dbName && table_name === tbName
+                            databaseName === dbName && tableName === tbName
                               ? 'text-primary-dark bg-primary/10'
                               : ''
                           }
@@ -150,28 +168,34 @@ export default function Page() {
           <div className="flex flex-col p-4 overflow-hidden min-h-[400px]">
             <p>Result</p>
 
-            <div className="mt-4 flex-1 overflow-hidden">
-              <DataGrid
-                columns={columns}
-                disableRowSelectionOnClick
-                getRowId={row => row.id}
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 25,
+            {isErrorTableData && (
+              <div className="text-red-500">Error loading table data</div>
+            )}
+
+            {!isErrorTableData && (
+              <div className="mt-4 flex-1 overflow-hidden">
+                <DataGrid
+                  columns={columns}
+                  disableRowSelectionOnClick
+                  getRowId={row => row.id}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 25,
+                      },
                     },
-                  },
-                }}
-                loading={getTableData.isPending}
-                pageSizeOptions={[5, 10, 25, 50]}
-                rows={rows}
-                sx={{
-                  '& .MuiDataGrid-row:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                  },
-                }}
-              />
-            </div>
+                  }}
+                  loading={isLoadingTableData}
+                  pageSizeOptions={[5, 10, 25, 50]}
+                  rows={rows}
+                  sx={{
+                    '& .MuiDataGrid-row:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    },
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           <div className="w-full h-[400px] mt-auto border-t border-divider">
@@ -180,7 +204,7 @@ export default function Page() {
 
               <div>
                 <Button
-                  disabled={!dbSelected?.database_name}
+                  disabled={!dbSelected?.databaseName}
                   onClick={() => {
                     alert('Run command is not implemented yet.')
                   }}

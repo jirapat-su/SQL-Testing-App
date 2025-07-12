@@ -1,7 +1,7 @@
 import { geolocation, ipAddress } from '@vercel/functions'
 import Elysia from 'elysia'
 
-export const defaultRouter = new Elysia({
+export const defaultRoute = new Elysia({
   detail: {
     tags: ['Default'],
   },

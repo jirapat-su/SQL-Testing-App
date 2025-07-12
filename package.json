@@ -73,6 +73,7 @@
     "@vercel/functions": "^2.2.3",
     "@vite-plugin-vercel/vike": "^9.0.6",
     "@vitejs/plugin-react": "^4.6.0",
+    "axios": "^1.10.0",
     "better-auth": "^1.2.12",
     "date-fns": "^4.1.0",
     "effect": "^3.16.12",
