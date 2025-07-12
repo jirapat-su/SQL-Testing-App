@@ -12,11 +12,8 @@ const cacheSession = cache(async (request: Request) => {
   return session
 })
 
-function getSession(app: Elysia) {
-  return app.derive(async ({ request }) => {
+export const getSessionPlugin = (app: Elysia) =>
+  app.derive(async ({ request }) => {
     const { session, user } = (await cacheSession(request)) || {}
     return { session, user }
   })
-}
-
-export { getSession }

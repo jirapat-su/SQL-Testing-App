@@ -4,10 +4,8 @@ import { randomUUID } from 'node:crypto'
 
 export const REQUEST_ID_HEADER = 'X-Request-ID'
 
-const requestID = (app: Elysia) =>
+export const requestIDPlugin = (app: Elysia) =>
   app.onRequest(({ request: { headers }, set }) => {
     set.headers[REQUEST_ID_HEADER] =
       headers.get(REQUEST_ID_HEADER) || randomUUID()
   })
-
-export { requestID }

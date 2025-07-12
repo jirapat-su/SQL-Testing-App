@@ -9,7 +9,7 @@ import { Logger } from '@/src/libs/logger'
 import type { ErrorService } from '../utils/error-service'
 
 import { apiRoutes } from './features/routes'
-import { REQUEST_ID_HEADER, requestID } from './plugins/request-id'
+import { REQUEST_ID_HEADER, requestIDPlugin } from './plugins/request-id'
 
 const logger = new Logger('API')
 
@@ -47,7 +47,7 @@ const api = new Elysia({
       )
     }
   )
-  .use(requestID)
+  .use(requestIDPlugin)
   .use(
     cors({
       allowedHeaders: [

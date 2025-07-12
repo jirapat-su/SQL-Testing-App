@@ -5,7 +5,7 @@ import Elysia from 'elysia'
 import { EffectHelpers } from '@/src/libs/effect'
 import { ErrorService } from '@/src/utils/error-service'
 
-import { getSession } from '../../plugins/get-session'
+import { authorizationPlugin } from '../../plugins/authorization'
 import { TestDatabaseRuntime } from './runtime'
 import { handlerSchema } from './schema'
 import { TestDatabaseService } from './service'
@@ -17,10 +17,7 @@ export const testDatabaseRoute = new Elysia({
   name: 'Test Database Router',
   prefix: '/test-database',
 })
-  .use(getSession)
-  .onBeforeHandle(({ session, status }) => {
-    if (!session) return status(401, { message: 'Unauthorized' })
-  })
+  .use(authorizationPlugin)
   .get(
     '/',
     async () => {
