@@ -1,4 +1,4 @@
-import { Effect } from 'effect'
+import { Duration, Effect } from 'effect'
 
 import { MySQLProvider } from '@/src/libs/mysql'
 
@@ -29,6 +29,7 @@ export class TestDatabaseService extends Effect.Service<TestDatabaseService>()(
               catch: error => GetAllDatabaseError.new()(error),
               try: () => connection.execute(SQL_COMMAND),
             })
+            connection.release()
 
             const tableNames = Array.isArray(rows)
               ? rows
@@ -42,7 +43,7 @@ export class TestDatabaseService extends Effect.Service<TestDatabaseService>()(
           return Array.from(data.entries()).map(([key, values]) => ({
             [key]: values,
           }))
-        })
+        }).pipe(Effect.timeout(Duration.seconds(5)))
       }
 
       const getTableData = (databaseName: string, tableName: string) => {
@@ -61,9 +62,10 @@ export class TestDatabaseService extends Effect.Service<TestDatabaseService>()(
             catch: error => GetTableDataError.new()(error),
             try: () => connection.execute(`SELECT * FROM \`${tableName}\``),
           })
+          connection.release()
 
           return rows
-        })
+        }).pipe(Effect.timeout(Duration.seconds(5)))
       }
 
       return {
