@@ -1,23 +1,15 @@
 /* eslint-disable ts/consistent-type-definitions */
-import type { z } from 'zod';
 
-import type { envClientSchema, envServerSchema } from '@/src/env/schema';
+import type { z } from 'zod'
 
-const _envClient = z.object(envClientSchema);
-const _envServer = z.object(envServerSchema);
+import type { envClientSchema, envServerSchema } from '@/src/env/schema'
+
+const _env = z.object(envServerSchema).merge(z.object(envClientSchema))
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof _envServer> {
-      NODE_ENV: 'development' | 'preview' | 'production' | 'test';
-    }
+    interface ProcessEnv extends z.infer<typeof _env> {}
   }
-
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
-  }
-
-  interface ImportMetaEnv extends z.infer<typeof _envClient> {}
 }
 
-export { };
+export {}

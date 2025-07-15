@@ -13,9 +13,24 @@
   "typescript.referencesCodeLens.enabled": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
 
+  // ===== TAILWINDCSS CONFIGURATION =====
+  "tailwindCSS.experimental.classRegex": [["className\\s*:\\s*['\"]([^'\"]*)['\"]"]],
+
   // ===== SEARCH CONFIGURATION =====
   "search.exclude": {
-    "**/node_modules": true
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.vercel": true,
+    "**/.next": true,
+  },
+
+  // ===== FILE WATCHING =====
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/dist/**": true,
+    "**/.vercel/**": true,
   },
 
   // ===== LANGUAGE-SPECIFIC FORMATTERS =====

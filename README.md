@@ -1,37 +1,53 @@
 # SQL Testing App
 
-A modern, full-stack React application built with Vike and ElysiaJS, featuring server-side rendering, TypeScript, and a robust development environment.
+A modern, full-stack React application built with NextJS and ElysiaJS, featuring server-side rendering, TypeScript, and a robust development environment.
 
 ## 🚀 Tech Stack
 
 - **Framework**:
-  - [Vike](https://vike.dev/) (ReactJS)
+  - [NextJS](https://nextjs.org/)
   - [ElysiaJS](https://elysiajs.com/)
-- **Language**: TypeScript
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Runtime**: [Node.js](https://nodejs.org/) (LTS version)
 - **Package Manager**: [Bun](https://bun.sh/) (v1.2.0)
 - **UI Libraries**:
-  - [Mantine](https://mantine.dev/)
+  - [Material UI](https://mui.com/material-ui/getting-started/)
   - [TailwindCSS](https://tailwindcss.com/)
-- **Font**: [Sarabun](https://fontsource.org/fonts/sarabun) (Thai font support)
 - **Authentication**: [Better Auth](https://www.better-auth.com/)
-- **Database**: [Prisma Postgres](https://www.prisma.io/postgres)
+- **Database**:
+  - [Prisma ORM](https://www.prisma.io/)
+  - [MySQL](https://sidorares.github.io/node-mysql2/docs)
 - **Development Tools**:
   - ESLint with [@antfu/eslint-config](https://github.com/antfu/eslint-config)
   - [Commitizen](https://commitizen-tools.github.io/commitizen/) for standardized commits
   - [Husky](https://typicode.github.io/husky/) for git hooks
   - [dotenvx](https://dotenvx.com/) for secure environment variable management
 
+---
+
 ## ✨ Features
 
 - 🎯 Server-side rendering (SSR)
-- ⚡️ Hot Module Replacement (HMR)
 - 🛠️ Type-safe API endpoints with ElysiaJS
-- 🎨 Modern UI with Mantine and TailwindCSS
+- 🎨 Modern UI with Material UI and TailwindCSS
 - 🎯 Strict ESLint configuration
 - 📝 Conventional commits with Commitizen
 
+---
+
 ## 🛠️ Development Setup
+
+### Environment Setup
+
+Create a `.env.keys` file in the root directory for secure environment variable encryption:
+
+```bash
+# .env.keys
+DOTENV_PRIVATE_KEY=""
+DOTENV_PRIVATE_KEY_PRODUCTION=""
+```
+
+Important: The `.env.keys` file should be kept secure and never committed to version control. Make sure it's included in your `.gitignore` file.
 
 ### Installation
 
@@ -48,6 +64,8 @@ Install dependencies:
 bun install
 ```
 
+---
+
 ## 🧹 Linting and Code Quality
 
 This project uses ESLint with @antfu/eslint-config for code quality and consistency. The following commands are available:
@@ -59,6 +77,8 @@ bun lint
 # Fix linting issues automatically
 bun lint:fix
 ```
+
+---
 
 ## 💻 Development Commands
 
@@ -78,6 +98,8 @@ http://localhost:3000/api/docs
 
 This provides a complete overview of all available endpoints, request/response schemas, and allows you to test API calls directly from the browser.
 
+---
+
 ## 🏗️ Building for Production
 
 Create a production build:
@@ -86,7 +108,7 @@ Create a production build:
 bun build
 ```
 
-The build output will be in the \`build\` directory.
+---
 
 ## 🚀 Deployment
 
@@ -96,4 +118,4 @@ This project is configured for deployment on Vercel:
 
 ---
 
-Built with ❤️ using [Vike](https://vike.dev/) and modern web technologies.
+Built with ❤️ using [NextJS](https://nextjs.org/) and modern web technologies.
