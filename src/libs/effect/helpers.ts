@@ -1,4 +1,4 @@
-import { Cause, Exit } from 'effect'
+import { Cause, Effect, Exit } from 'effect'
 
 export type ErrorMsg = {
   error?: unknown
@@ -17,4 +17,9 @@ export function getDataOrThrowRawError<A, E = never>(exit: Exit.Exit<A, E>) {
     },
     onSuccess: data => data,
   })
+}
+
+export async function runEffectTask<A, E>(effect: Effect.Effect<A, E>) {
+  const exit = await Effect.runPromiseExit(effect)
+  return getDataOrThrowRawError(exit)
 }
