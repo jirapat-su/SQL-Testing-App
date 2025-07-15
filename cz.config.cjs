@@ -30,7 +30,12 @@ module.exports = {
     subject: 'Write a SHORT, IMPERATIVE tense description of the change:\n',
     type: "Select the type of change that you're committing:",
   },
-  scopes: [{ name: 'web' }, { name: 'api' }, { name: 'database' }],
+  scopes: [
+    { name: 'app' },
+    { name: 'web' },
+    { name: 'api' },
+    { name: 'database' },
+  ],
   // limit subject length
   subjectLimit: 100,
 
