@@ -44,12 +44,13 @@ export default function DatabasePage() {
     tableName: undefined,
   })
 
-  const { getDatabases, getTableData, runCommandQuery } = useExamDatabaseAPI()
+  // API
+  const { getDatabase, getTableData, runCommandQuery } = useExamDatabaseAPI()
   const {
     data: databaseResponse,
     error: databaseError,
     isLoading: isLoadingDatabases,
-  } = getDatabases
+  } = getDatabase
   const {
     data: tableDataResponse,
     error: tableDataError,

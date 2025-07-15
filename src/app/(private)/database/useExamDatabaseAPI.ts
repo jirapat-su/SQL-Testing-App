@@ -2,32 +2,26 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import {
-  getDatabase,
-  getTableData as getTableDataSrv,
-  runCommandQuery as runCommandQuerySrv,
-} from './service'
+import { examDatabaseAPIService as apiService } from './service'
 
 export function useExamDatabaseAPI() {
-  const getDatabases = useQuery({
-    queryFn: () => getDatabase(),
-    queryKey: ['getDatabases'],
+  const getDatabase = useQuery({
+    queryFn: apiService.getDatabase,
+    queryKey: ['useExamDatabaseAPI-getDatabase'],
   })
 
   const getTableData = useMutation({
-    mutationFn: (body: { databaseName: string; tableName: string }) =>
-      getTableDataSrv(body.databaseName, body.tableName),
-    mutationKey: ['getTableData'],
+    mutationFn: apiService.getTableData,
+    mutationKey: ['useExamDatabaseAPI-getTableData'],
   })
 
   const runCommandQuery = useMutation({
-    mutationFn: (body: { databaseName: string; sqlCommand: string }) =>
-      runCommandQuerySrv(body.databaseName, body.sqlCommand),
-    mutationKey: ['runCommandQuery'],
+    mutationFn: apiService.runCommandQuery,
+    mutationKey: ['useExamDatabaseAPI-runCommandQuery'],
   })
 
   return {
-    getDatabases,
+    getDatabase,
     getTableData,
     runCommandQuery,
   }
