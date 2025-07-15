@@ -1,14 +1,13 @@
-import { createEnv } from '@t3-oss/env-core'
-import { vercel } from '@t3-oss/env-core/presets-zod'
+import { createEnv } from '@t3-oss/env-nextjs'
+import { vercel } from '@t3-oss/env-nextjs/presets-zod'
 
 import { envClientSchema, envServerSchema } from './schema'
 
 export const env = createEnv({
   client: envClientSchema,
-  clientPrefix: 'PUBLIC_ENV__',
   emptyStringAsUndefined: true,
+  experimental__runtimeEnv: process.env,
   extends: [vercel()],
   isServer: typeof window === 'undefined',
-  runtimeEnv: typeof process !== 'undefined' ? process.env : import.meta.env,
   server: envServerSchema,
 })

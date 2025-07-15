@@ -1,3 +1,5 @@
+'use client'
+
 import type { Event } from 'react-big-calendar'
 
 import { Box } from '@mui/material'

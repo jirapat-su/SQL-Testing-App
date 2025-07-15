@@ -1,5 +1,6 @@
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { nextCookies } from 'better-auth/next-js'
 import { bearer, openAPI } from 'better-auth/plugins'
 import Keyv from 'keyv'
 
@@ -35,7 +36,7 @@ const auth = betterAuth({
     enabled: !(env.VERCEL === '1'),
     requireEmailVerification: false,
   },
-  plugins: [bearer(), openAPI()],
+  plugins: [bearer(), openAPI(), nextCookies()],
   rateLimit: {
     enabled: true,
     max: 100, // max requests in the window

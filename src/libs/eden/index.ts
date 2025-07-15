@@ -1,9 +1,6 @@
-import type { AxiosResponse } from 'axios'
-
 import { treaty } from '@elysiajs/eden'
-import axios from 'axios'
 
-import type { API } from '@/src/api'
+import type { TElysiaApp } from '@/src/app/api/main'
 
 const normalizeUrl = (input: Request | string | URL): string => {
   try {
@@ -27,59 +24,11 @@ const normalizeUrl = (input: Request | string | URL): string => {
   }
 }
 
-const axiosToFetchResponse = (axiosResponse: AxiosResponse): Response => {
-  const { data, headers, status, statusText } = axiosResponse
-
-  const responseInit: ResponseInit = {
-    headers: new Headers(Object.entries(headers)),
-    status,
-    statusText,
-  }
-
-  const blob = new Blob([JSON.stringify(data)], {
-    type: headers['content-type'] || 'application/json',
-  })
-
-  const readableStream = new ReadableStream({
-    start(controller) {
-      const reader = blob.stream().getReader()
-      return pump()
-      function pump(): unknown {
-        return reader.read().then(({ done, value }) => {
-          if (done) {
-            controller.close()
-            return
-          }
-          controller.enqueue(value)
-          return pump()
-        })
-      }
-    },
-  })
-
-  return new Response(readableStream, responseInit)
-}
-
-const httpClient = treaty<API>(String(), {
-  fetcher: async (url, options) => {
-    const { body, headers, method, ...ops } = options ?? {}
-
-    const response = await axios(normalizeUrl(url), {
-      data: body,
-      fetchOptions: {
-        ...ops,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-        ...(headers as Record<string, string>),
-      },
-      method: method || 'GET',
-      responseType: 'json',
-      timeout: 5000,
-    })
-
-    return axiosToFetchResponse(response)
+const httpClient = treaty<TElysiaApp>(String(), {
+  fetch: {
+    next: { revalidate: 0 },
   },
+  fetcher: (url, options) => fetch(normalizeUrl(url), options),
 })
 
 export { httpClient }

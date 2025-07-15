@@ -1,11 +1,11 @@
 # SQL Testing App
 
-A modern, full-stack React application built with Vike and ElysiaJS, featuring server-side rendering, TypeScript, and a robust development environment.
+A modern, full-stack React application built with NextJS and ElysiaJS, featuring server-side rendering, TypeScript, and a robust development environment.
 
 ## 🚀 Tech Stack
 
 - **Framework**:
-  - [Vike](https://vike.dev/) (ReactJS)
+  - [NextJS](https://nextjs.org/)
   - [ElysiaJS](https://elysiajs.com/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Runtime**: [Node.js](https://nodejs.org/) (LTS version)
@@ -14,7 +14,9 @@ A modern, full-stack React application built with Vike and ElysiaJS, featuring s
   - [Material UI](https://mui.com/material-ui/getting-started/)
   - [TailwindCSS](https://tailwindcss.com/)
 - **Authentication**: [Better Auth](https://www.better-auth.com/)
-- **Database**: [Prisma ORM](https://www.prisma.io/) (Prisma Postgres)
+- **Database**:
+  - [Prisma ORM](https://www.prisma.io/)
+  - [MySQL](https://sidorares.github.io/node-mysql2/docs)
 - **Development Tools**:
   - ESLint with [@antfu/eslint-config](https://github.com/antfu/eslint-config)
   - [Commitizen](https://commitizen-tools.github.io/commitizen/) for standardized commits
@@ -26,7 +28,6 @@ A modern, full-stack React application built with Vike and ElysiaJS, featuring s
 ## ✨ Features
 
 - 🎯 Server-side rendering (SSR)
-- ⚡️ Hot Module Replacement (HMR)
 - 🛠️ Type-safe API endpoints with ElysiaJS
 - 🎨 Modern UI with Material UI and TailwindCSS
 - 🎯 Strict ESLint configuration
@@ -107,8 +108,6 @@ Create a production build:
 bun build
 ```
 
-The build output will be in the `dist` directory.
-
 ---
 
 ## 🚀 Deployment
@@ -119,4 +118,4 @@ This project is configured for deployment on Vercel:
 
 ---
 
-Built with ❤️ using [Vike](https://vike.dev/) and modern web technologies.
+Built with ❤️ using [NextJS](https://nextjs.org/) and modern web technologies.
