@@ -1,8 +1,10 @@
 'use client'
 
-import { useMonaco } from '@monaco-editor/react'
+import type { Monaco } from '@monaco-editor/react'
+import type { editor } from 'monaco-editor'
+
 import dynamic from 'next/dynamic'
-import { useEffect } from 'react'
+import { useCallback, useRef } from 'react'
 
 import { useThemeMode } from '@/src/hooks/useThemeMode'
 
@@ -32,12 +34,10 @@ export default function SqlEditor({
   onCodeChange,
   value,
 }: SqlEditorProps) {
+  const monacoRef = useRef<Monaco>(null)
   const themeMode = useThemeMode()
-  const monaco = useMonaco()
 
-  useEffect(() => {
-    if (!monaco) return
-
+  const handleEditorWillMount = useCallback((monaco: Monaco) => {
     monaco.languages.registerCompletionItemProvider('sql', {
       provideCompletionItems: (model, position) => {
         const word = model.getWordUntilPosition(position)
@@ -67,21 +67,22 @@ export default function SqlEditor({
         return { suggestions }
       },
     })
-  }, [monaco])
+  }, [])
 
-  if (!monaco) {
-    return (
-      <div className="w-full h-full flex items-center justify-center text-gray-500">
-        Loading editor...
-      </div>
-    )
-  }
+  const handleEditorDidMount = useCallback(
+    (_editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
+      monacoRef.current = monaco
+    },
+    []
+  )
 
   return (
     <MonacoEditor
+      beforeMount={handleEditorWillMount}
       height={height}
       language="sql"
       onChange={onCodeChange}
+      onMount={handleEditorDidMount}
       theme={themeMode === 'dark' ? 'vs-dark' : 'vs-light'}
       value={value}
     />
