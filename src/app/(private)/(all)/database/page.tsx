@@ -20,8 +20,7 @@ import { useExamDatabaseAPI } from './useExamDatabaseAPI'
 
 const PAGINATION_SIZES = [5, 10, 25, 50] as const
 const DEFAULT_PAGE_SIZE = 25
-const SIDEBAR_WIDTH = '240px'
-const EDITOR_HEIGHT = '400px'
+const EDITOR_HEIGHT = '360px'
 const EDITOR_HEADER_HEIGHT = '60px'
 
 type DatabaseSelection = {
@@ -173,14 +172,7 @@ export default function DatabasePage() {
 
   return (
     <div className="flex flex-col lg:flex-row overflow-hidden w-full h-full">
-      <div
-        className="w-full border-b lg:border-r-1 border-divider"
-        style={{
-          maxWidth: SIDEBAR_WIDTH,
-          minWidth: SIDEBAR_WIDTH,
-          width: SIDEBAR_WIDTH,
-        }}
-      >
+      <div className="w-full border-b lg:border-r-1 border-divider lg:max-w-[240px]">
         <div className="p-4">Database List</div>
 
         <div className="max-h-[200px] lg:max-h-full overflow-auto">
