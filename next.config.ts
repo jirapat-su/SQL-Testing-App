@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  logging: {
+    incomingRequests: false,
+  },
   poweredByHeader: false,
   reactStrictMode: true,
 }
