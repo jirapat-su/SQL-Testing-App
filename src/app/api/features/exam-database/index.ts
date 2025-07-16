@@ -6,9 +6,13 @@ import { EffectHelpers } from '@/src/libs/effect'
 import { ErrorService } from '@/src/utils/error-service'
 
 import { authorizationPlugin } from '../../plugins/authorization'
+import { generateCacheKeyPlugin } from '../../plugins/gen-cache-key'
+import { cacheProvider } from '../../providers/cache'
 import { TestDatabaseRuntime } from './runtime'
 import { handlerSchema } from './schema'
 import { ExamDatabaseService } from './service'
+
+const { getOrSet } = cacheProvider()
 
 export const examDatabaseRoute = new Elysia({
   detail: {
@@ -18,14 +22,24 @@ export const examDatabaseRoute = new Elysia({
   prefix: '/exam-database',
 })
   .use(authorizationPlugin)
+  .use(generateCacheKeyPlugin)
   // Get all databases
   .get(
     '/',
-    async () => {
+    async ({ cacheKey }) => {
       const result = await ExamDatabaseService.pipe(
-        Effect.andThen(srv => srv.getAllDatabase()),
+        Effect.andThen(srv => {
+          return getOrSet(cacheKey, () => srv.getAllDatabase())
+        }),
         Effect.timeout(Duration.seconds(5)),
         Effect.catchTags({
+          'Cache/Set/Error': error => {
+            return Effect.fail(
+              new ErrorService(500, 'Failed to set cache for databases', {
+                error,
+              })
+            )
+          },
           'MySQL/Connection/Error': error => {
             return Effect.fail(
               new ErrorService(500, 'Failed to connect to the database', {
@@ -62,11 +76,15 @@ export const examDatabaseRoute = new Elysia({
   // Get table data from a specific database
   .get(
     '/:databaseName/:tableName',
-    async ({ params }) => {
+    async ({ cacheKey, params }) => {
       const { databaseName, tableName } = params
 
       const result = await ExamDatabaseService.pipe(
-        Effect.andThen(srv => srv.getTableData(databaseName, tableName)),
+        Effect.andThen(srv => {
+          return getOrSet(cacheKey, () =>
+            srv.getTableData(databaseName, tableName)
+          )
+        }),
         Effect.timeout(Duration.seconds(5)),
         Effect.catchTags({
           'MySQL/Connection/Error': error => {

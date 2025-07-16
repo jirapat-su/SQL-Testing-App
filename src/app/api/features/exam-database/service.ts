@@ -1,6 +1,6 @@
 import type { QueryResult, ResultSetHeader } from 'mysql2'
 
-import { Effect } from 'effect'
+import { Effect, pipe } from 'effect'
 
 import { MySQLProvider } from '../../providers/mysql'
 import { CommandQueryError, DatabaseNotAllowedError } from './service.error'
@@ -13,6 +13,19 @@ type CommandQueryResult = {
   affter?: QueryResult
   before?: QueryResult
 }
+
+const dbValidation = (databaseName: string) =>
+  Effect.tryPromise({
+    catch: e => DatabaseNotAllowedError.new(databaseName)(e),
+    try: () =>
+      new Promise<string>((resolve, reject) => {
+        if (!ALLOW_DATABASE_NAMES.includes(databaseName)) {
+          reject(new Error(`Database ${databaseName} is not allowed.`))
+        } else {
+          resolve(databaseName)
+        }
+      }),
+  })
 
 export class ExamDatabaseService extends Effect.Service<ExamDatabaseService>()(
   'Feature/ExamDatabase/Service',
@@ -45,31 +58,18 @@ export class ExamDatabaseService extends Effect.Service<ExamDatabaseService>()(
       }
 
       const getTableData = (databaseName: string, tableName: string) => {
-        if (!ALLOW_DATABASE_NAMES.includes(databaseName)) {
-          return Effect.fail(
-            DatabaseNotAllowedError.new(databaseName)(
-              `Database ${databaseName} is not allowed.`
-            )
-          )
-        }
-
         const SQL_COMMAND = `SELECT * FROM \`${tableName}\`;`
 
-        return Effect.gen(function* () {
-          const rows = yield* query(databaseName, SQL_COMMAND)
-          return rows
-        })
+        return pipe(
+          dbValidation(databaseName),
+          Effect.andThen(dbName => {
+            const rows = query(dbName, SQL_COMMAND)
+            return rows
+          })
+        )
       }
 
       const commandQuery = (databaseName: string, sqlCommand: string) => {
-        if (!ALLOW_DATABASE_NAMES.includes(databaseName)) {
-          return Effect.fail(
-            DatabaseNotAllowedError.new()(
-              `Database ${databaseName} is not allowed.`
-            )
-          )
-        }
-
         if (!sqlCommand.trim()) {
           return Effect.fail(
             CommandQueryError.new()('SQL command cannot be empty.')
@@ -77,6 +77,9 @@ export class ExamDatabaseService extends Effect.Service<ExamDatabaseService>()(
         }
 
         return Effect.gen(function* () {
+          // Validate database name
+          yield* dbValidation(databaseName)
+
           // Check if the command is a SELECT query
           const isSelectQuery = checkSelectQuery(sqlCommand)
 

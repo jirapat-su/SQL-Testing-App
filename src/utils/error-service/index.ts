@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from '@/src/constants/http-status'
 
-type ErrorDetail = { [key in string]: unknown }
+type ErrorDetail = { error: unknown }
 type StatusCode = keyof typeof HTTP_STATUS
 
 export class ErrorService extends Error {

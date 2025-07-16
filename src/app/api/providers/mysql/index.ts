@@ -19,7 +19,7 @@ class MySQLQueryError extends Data.TaggedError(
 }
 
 export class MySQLProvider extends Effect.Service<MySQLProvider>()(
-  'Libs/MySQL',
+  'Provider/MySQL',
   {
     dependencies: [],
     effect: Effect.gen(function* () {
