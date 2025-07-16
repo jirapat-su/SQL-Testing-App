@@ -1,6 +1,6 @@
 enum UserRole {
-  USER
-  ADMIN
+  TEACHER
+  STUDENT
 }
 
 model User {
@@ -11,7 +11,7 @@ model User {
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
-  role          UserRole? @default(USER)
+  role          UserRole? @default(STUDENT)
   sessions      Session[]
   accounts      Account[]
 

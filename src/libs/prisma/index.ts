@@ -1,6 +1,6 @@
 import { withAccelerate } from '@prisma/extension-accelerate'
 
-import { PrismaClient } from './client'
+import { PrismaClient } from './client/edge'
 
 // eslint-disable-next-line no-restricted-globals
 const globalForPrisma = global as unknown as {

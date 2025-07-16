@@ -82,11 +82,11 @@ const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        defaultValue: 'USER',
+        defaultValue: 'STUDENT',
         required: false,
         type: 'string',
         validation: {
-          enum: ['USER', 'ADMIN'],
+          enum: ['TEACHER', 'STUDENT'],
         },
       },
     },
