@@ -4,7 +4,7 @@ import { addHours } from 'date-fns'
 
 import { BigCalendar } from '@/src/components/big-calendar'
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div className="p-4">
       <BigCalendar

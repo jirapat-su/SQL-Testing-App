@@ -3,17 +3,18 @@ import { headers } from 'next/headers'
 import { Fragment } from 'react'
 
 import { auth } from '@/src/libs/better-auth'
+import { $Enums } from '@/src/libs/prisma/client'
 
-type PrivateLayoutProps = Readonly<{
+type StudentLayoutProps = Readonly<{
   children: React.ReactNode
 }>
 
-export default async function PrivateLayout({ children }: PrivateLayoutProps) {
+export default async function StudentLayout({ children }: StudentLayoutProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
 
-  if (!session) {
+  if (!session || session.user.role !== $Enums.UserRole.STUDENT) {
     return (
       <Box className="p-4" component={'main'}>
         <h1 className="text-2xl font-bold">Unauthorized</h1>
