@@ -51,6 +51,7 @@ export default function ExamManagementTemplate({
       <Box className="border border-divider rounded-md" component={'div'}>
         <Tabs
           aria-label="nav tabs example"
+          className="border-b border-divider"
           role="navigation"
           value={matchPathname}
         >

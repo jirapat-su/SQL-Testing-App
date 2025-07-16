@@ -20,7 +20,7 @@ import { useExamDatabaseAPI } from './useExamDatabaseAPI'
 
 const PAGINATION_SIZES = [5, 10, 25, 50] as const
 const DEFAULT_PAGE_SIZE = 25
-const SIDEBAR_WIDTH = '280px'
+const SIDEBAR_WIDTH = '240px'
 const EDITOR_HEIGHT = '400px'
 const EDITOR_HEADER_HEIGHT = '60px'
 
