@@ -26,6 +26,7 @@ export const MENU_ITEMS: Navigation = [
   {
     acceptRoles: [$Enums.UserRole.TEACHER],
     icon: <AssignmentIcon />,
+    pattern: 'exam-management{/:subMenu}*',
     segment: 'exam-management',
     title: 'ข้อสอบ',
   },
