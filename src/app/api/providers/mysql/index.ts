@@ -1,22 +1,11 @@
 import type { PoolConnection, QueryResult } from 'mysql2/promise'
 
-import { Data, Effect } from 'effect'
+import { Effect } from 'effect'
 import mysqlLib from 'mysql2/promise'
 
-import { EffectHelpers } from '@/src/libs/effect'
 import { mysqlPoolConfig } from '@/src/libs/mysql'
 
-class MySQLConnectionError extends Data.TaggedError(
-  'MySQL/Connection/Error'
-)<EffectHelpers.ErrorMsg> {
-  static new = EffectHelpers.createErrorFactory(this)
-}
-
-class MySQLQueryError extends Data.TaggedError(
-  'MySQL/Query/Error'
-)<EffectHelpers.ErrorMsg> {
-  static new = EffectHelpers.createErrorFactory(this)
-}
+import { MySQLConnectionError, MySQLQueryError } from './mysql.error'
 
 export class MySQLProvider extends Effect.Service<MySQLProvider>()(
   'Provider/MySQL',
