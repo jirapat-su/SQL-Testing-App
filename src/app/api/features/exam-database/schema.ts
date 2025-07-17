@@ -1,16 +1,22 @@
-import z from 'zod'
+import { t } from 'elysia'
 
 export const handlerSchema = {
   commandQuery: {
-    body: z.object({
-      databaseName: z.string(),
-      sqlCommand: z.string(),
-    }),
+    body: t.Object(
+      {
+        databaseName: t.String(),
+        sqlCommand: t.String(),
+      },
+      { additionalProperties: false }
+    ),
   },
   getTableData: {
-    params: z.object({
-      databaseName: z.string(),
-      tableName: z.string(),
-    }),
+    params: t.Object(
+      {
+        databaseName: t.String(),
+        tableName: t.String(),
+      },
+      { additionalProperties: false }
+    ),
   },
 }

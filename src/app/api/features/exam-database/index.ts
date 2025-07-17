@@ -1,4 +1,3 @@
-import { TypeBox } from '@sinclair/typemap'
 import { Duration, Effect } from 'effect'
 import Elysia from 'elysia'
 
@@ -8,9 +7,9 @@ import { ErrorService } from '@/src/utils/error-service'
 import { authorizationPlugin } from '../../plugins/authorization'
 import { generateCacheKeyPlugin } from '../../plugins/gen-cache-key'
 import { cacheProvider } from '../../providers/cache'
-import { TestDatabaseRuntime } from './runtime'
 import { handlerSchema } from './schema'
 import { ExamDatabaseService } from './service'
+import { ExamDatabaseServiceRuntime } from './service.runtime'
 
 const { getOrSet } = cacheProvider()
 
@@ -58,7 +57,7 @@ export const examDatabaseRoute = new Elysia({
             )
           },
         }),
-        TestDatabaseRuntime.runPromiseExit
+        ExamDatabaseServiceRuntime.runPromiseExit
       ).then(EffectHelpers.getDataOrThrowRawError)
 
       return {
@@ -110,7 +109,7 @@ export const examDatabaseRoute = new Elysia({
             )
           },
         }),
-        TestDatabaseRuntime.runPromiseExit
+        ExamDatabaseServiceRuntime.runPromiseExit
       ).then(EffectHelpers.getDataOrThrowRawError)
 
       return {
@@ -123,7 +122,7 @@ export const examDatabaseRoute = new Elysia({
         description: 'Fetches data from a specific table in a database.',
         summary: 'Get table data',
       },
-      params: TypeBox(handlerSchema.getTableData.params),
+      params: handlerSchema.getTableData.params,
     }
   )
   // Execute a command query on a specific database
@@ -169,7 +168,7 @@ export const examDatabaseRoute = new Elysia({
             )
           },
         }),
-        TestDatabaseRuntime.runPromiseExit
+        ExamDatabaseServiceRuntime.runPromiseExit
       ).then(EffectHelpers.getDataOrThrowRawError)
 
       return {
@@ -178,7 +177,7 @@ export const examDatabaseRoute = new Elysia({
       }
     },
     {
-      body: TypeBox(handlerSchema.commandQuery.body),
+      body: handlerSchema.commandQuery.body,
       detail: {
         description: 'Executes a SQL command on a specified database.',
         summary: 'Execute command query',

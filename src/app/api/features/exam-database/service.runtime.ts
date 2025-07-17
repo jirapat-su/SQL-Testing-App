@@ -4,4 +4,4 @@ import { ExamDatabaseService } from './service'
 
 const serviceDendencies = Layer.mergeAll(ExamDatabaseService.Default)
 
-export const TestDatabaseRuntime = ManagedRuntime.make(serviceDendencies)
+export const ExamDatabaseServiceRuntime = ManagedRuntime.make(serviceDendencies)
