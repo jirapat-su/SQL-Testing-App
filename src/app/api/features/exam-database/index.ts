@@ -6,12 +6,10 @@ import { ErrorService } from '@/src/utils/error-service'
 
 import { authorizationPlugin } from '../../plugins/authorization'
 import { generateCacheKeyPlugin } from '../../plugins/gen-cache-key'
-import { cacheProvider } from '../../providers/cache'
+import { CacheProvider } from '../../providers/cache'
 import { handlerSchema } from './schema'
 import { ExamDatabaseService } from './service'
 import { ExamDatabaseServiceRuntime } from './service.runtime'
-
-const { getOrSet } = cacheProvider()
 
 export const examDatabaseRoute = new Elysia({
   detail: {
@@ -26,39 +24,43 @@ export const examDatabaseRoute = new Elysia({
   .get(
     '/',
     async ({ cacheKey }) => {
-      const result = await ExamDatabaseService.pipe(
-        Effect.andThen(srv => {
-          return getOrSet(cacheKey, () => srv.getAllDatabase())
-        }),
-        Effect.timeout(Duration.seconds(5)),
-        Effect.catchTags({
-          'Cache/Set/Error': error => {
-            return Effect.fail(
-              new ErrorService(500, 'Failed to set cache for databases', {
-                error,
-              })
-            )
-          },
-          'MySQL/Connection/Error': error => {
-            return Effect.fail(
-              new ErrorService(500, 'Failed to connect to the database', {
-                error,
-              })
-            )
-          },
-          'MySQL/Query/Error': error => {
-            return Effect.fail(
-              new ErrorService(400, 'Failed to fetch databases', { error })
-            )
-          },
-          TimeoutException: error => {
-            return Effect.fail(
-              new ErrorService(408, 'Request timed out', { error })
-            )
-          },
-        }),
-        ExamDatabaseServiceRuntime.runPromiseExit
-      ).then(EffectHelpers.getDataOrThrowRawError)
+      const result = await Effect.gen(function* () {
+        const { getOrSet } = yield* CacheProvider
+        const { getAllDatabase } = yield* ExamDatabaseService
+        const result = yield* getOrSet(cacheKey, () => getAllDatabase())
+        return result
+      })
+        .pipe(
+          Effect.timeout(Duration.seconds(5)),
+          Effect.catchTags({
+            'Cache/Set/Error': error => {
+              return Effect.fail(
+                new ErrorService(500, 'Failed to set cache for databases', {
+                  error,
+                })
+              )
+            },
+            'MySQL/Connection/Error': error => {
+              return Effect.fail(
+                new ErrorService(500, 'Failed to connect to the database', {
+                  error,
+                })
+              )
+            },
+            'MySQL/Query/Error': error => {
+              return Effect.fail(
+                new ErrorService(400, 'Failed to fetch databases', { error })
+              )
+            },
+            TimeoutException: error => {
+              return Effect.fail(
+                new ErrorService(408, 'Request timed out', { error })
+              )
+            },
+          }),
+          ExamDatabaseServiceRuntime.runPromiseExit
+        )
+        .then(EffectHelpers.getDataOrThrowRawError)
 
       return {
         result,
@@ -78,39 +80,43 @@ export const examDatabaseRoute = new Elysia({
     async ({ cacheKey, params }) => {
       const { databaseName, tableName } = params
 
-      const result = await ExamDatabaseService.pipe(
-        Effect.andThen(srv => {
-          return getOrSet(cacheKey, () =>
-            srv.getTableData(databaseName, tableName)
-          )
-        }),
-        Effect.timeout(Duration.seconds(5)),
-        Effect.catchTags({
-          'MySQL/Connection/Error': error => {
-            return Effect.fail(
-              new ErrorService(500, 'Failed to connect to the database', {
-                error,
-              })
-            )
-          },
-          'MySQL/Query/Error': error => {
-            return Effect.fail(
-              new ErrorService(400, 'Failed to fetch table data', { error })
-            )
-          },
-          'Task/DatabaseNotAllowed/Error': error => {
-            return Effect.fail(
-              new ErrorService(403, 'Database not allowed', { error })
-            )
-          },
-          TimeoutException: error => {
-            return Effect.fail(
-              new ErrorService(408, 'Request timed out', { error })
-            )
-          },
-        }),
-        ExamDatabaseServiceRuntime.runPromiseExit
-      ).then(EffectHelpers.getDataOrThrowRawError)
+      const result = await Effect.gen(function* () {
+        const { getOrSet } = yield* CacheProvider
+        const { getTableData } = yield* ExamDatabaseService
+        const result = yield* getOrSet(cacheKey, () =>
+          getTableData(databaseName, tableName)
+        )
+        return result
+      })
+        .pipe(
+          Effect.timeout(Duration.seconds(5)),
+          Effect.catchTags({
+            'MySQL/Connection/Error': error => {
+              return Effect.fail(
+                new ErrorService(500, 'Failed to connect to the database', {
+                  error,
+                })
+              )
+            },
+            'MySQL/Query/Error': error => {
+              return Effect.fail(
+                new ErrorService(400, 'Failed to fetch table data', { error })
+              )
+            },
+            'Task/DatabaseNotAllowed/Error': error => {
+              return Effect.fail(
+                new ErrorService(403, 'Database not allowed', { error })
+              )
+            },
+            TimeoutException: error => {
+              return Effect.fail(
+                new ErrorService(408, 'Request timed out', { error })
+              )
+            },
+          }),
+          ExamDatabaseServiceRuntime.runPromiseExit
+        )
+        .then(EffectHelpers.getDataOrThrowRawError)
 
       return {
         result,
@@ -131,45 +137,50 @@ export const examDatabaseRoute = new Elysia({
     async ({ body }) => {
       const { databaseName, sqlCommand } = body
 
-      const result = await ExamDatabaseService.pipe(
-        Effect.andThen(srv => srv.commandQuery(databaseName, sqlCommand)),
-        Effect.timeout(Duration.seconds(5)),
-        Effect.catchTags({
-          'MySQL/Connection/Error': error => {
-            return Effect.fail(
-              new ErrorService(500, 'Failed to connect to the database', {
-                error,
-              })
-            )
-          },
-          'Task/CommandQuery/Error': error => {
-            return Effect.fail(
-              new ErrorService(
-                400,
-                typeof error?.error === 'object' &&
-                error?.error &&
-                'message' in error.error
-                  ? (error.error as { message: string }).message
-                  : 'Failed to execute command query',
-                {
+      const result = await Effect.gen(function* () {
+        const { commandQuery } = yield* ExamDatabaseService
+        const result = yield* commandQuery(databaseName, sqlCommand)
+        return result
+      })
+        .pipe(
+          Effect.timeout(Duration.seconds(5)),
+          Effect.catchTags({
+            'MySQL/Connection/Error': error => {
+              return Effect.fail(
+                new ErrorService(500, 'Failed to connect to the database', {
                   error,
-                }
+                })
               )
-            )
-          },
-          'Task/DatabaseNotAllowed/Error': error => {
-            return Effect.fail(
-              new ErrorService(403, 'Database not allowed', { error })
-            )
-          },
-          TimeoutException: error => {
-            return Effect.fail(
-              new ErrorService(408, 'Request timed out', { error })
-            )
-          },
-        }),
-        ExamDatabaseServiceRuntime.runPromiseExit
-      ).then(EffectHelpers.getDataOrThrowRawError)
+            },
+            'Task/CommandQuery/Error': error => {
+              return Effect.fail(
+                new ErrorService(
+                  400,
+                  typeof error?.error === 'object' &&
+                  error?.error &&
+                  'message' in error.error
+                    ? (error.error as { message: string }).message
+                    : 'Failed to execute command query',
+                  {
+                    error,
+                  }
+                )
+              )
+            },
+            'Task/DatabaseNotAllowed/Error': error => {
+              return Effect.fail(
+                new ErrorService(403, 'Database not allowed', { error })
+              )
+            },
+            TimeoutException: error => {
+              return Effect.fail(
+                new ErrorService(408, 'Request timed out', { error })
+              )
+            },
+          }),
+          ExamDatabaseServiceRuntime.runPromiseExit
+        )
+        .then(EffectHelpers.getDataOrThrowRawError)
 
       return {
         result,

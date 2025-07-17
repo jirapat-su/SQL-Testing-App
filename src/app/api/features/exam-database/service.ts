@@ -15,16 +15,18 @@ type CommandQueryResult = {
 }
 
 const dbValidation = (databaseName: string) =>
-  Effect.tryPromise({
-    catch: e => DatabaseNotAllowedError.new(databaseName)(e),
-    try: () =>
-      new Promise<string>((resolve, reject) => {
-        if (!ALLOW_DATABASE_NAMES.includes(databaseName)) {
-          reject(new Error(`Database ${databaseName} is not allowed.`))
-        } else {
-          resolve(databaseName)
-        }
-      }),
+  Effect.async<string, DatabaseNotAllowedError>(resume => {
+    if (!ALLOW_DATABASE_NAMES.includes(databaseName)) {
+      resume(
+        Effect.fail(
+          DatabaseNotAllowedError.new(databaseName)(
+            `Database ${databaseName} is not allowed.`
+          )
+        )
+      )
+    } else {
+      resume(Effect.succeed(databaseName))
+    }
   })
 
 export class ExamDatabaseService extends Effect.Service<ExamDatabaseService>()(
