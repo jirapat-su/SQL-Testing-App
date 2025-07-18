@@ -74,6 +74,7 @@ export default antfu({
 
     // Other custom rules
     'antfu/no-top-level-await': 'off',
+    'jsonc/sort-keys': 'off',
     'no-alert': 'off',
     'no-console': ['error', { allow: ['warn', 'error', 'debug'] }],
     'no-empty-pattern': 'off',

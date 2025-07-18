@@ -17,15 +17,12 @@ async function runSeed() {
   console.log(``)
 
   for (let i = 0; i < seeds.length; i++) {
-    console.log(
-      `[${i + 1}/${seeds.length}] Seeding ${seeds[i].name.replace('Seed_', '')}...`
-    )
+    const seedName = seeds[i]?.name?.replace('Seed_', '') || 'Unknown'
+    console.log(`[${i + 1}/${seeds.length}] Seeding ${seedName}...`)
 
-    await seeds[i]()
+    await seeds[i]?.()
 
-    console.log(
-      `[${i + 1}/${seeds.length}] Seed ${seeds[i].name.replace('Seed_', '')} completed`
-    )
+    console.log(`[${i + 1}/${seeds.length}] Seed ${seedName} completed`)
     console.log(`[${i + 1}/${seeds.length}] Seed completed`)
     console.log(``)
   }
